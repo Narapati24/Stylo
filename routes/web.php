@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
 
 // Front Routes
 Route::name('front.')->group(function () {
@@ -17,8 +18,9 @@ Route::name('front.')->group(function () {
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Product Resource Routes
     Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
 });

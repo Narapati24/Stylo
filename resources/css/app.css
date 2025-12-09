@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap');
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -6,17 +7,11 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
-    /* Earthy Luxury Palette (Literal Names) */
     --color-bone: #FAF9F6;
-    --color-espresso: #2C2A29;
-    --color-sand: #D6CFC7;
-    --color-sage: #5D6D58;
-
-    /* Semantic Names (Alias) */
-    --color-primary: var(--color-espresso);   /* Untuk Tombol Utama & Teks */
-    --color-secondary: var(--color-sand);     /* Untuk Border & Elemen Sekunder */
-    --color-accent: var(--color-sage);        /* Untuk Badge / Diskon */
+    --color-primary: #2C2A29;
+    --color-secondary: #E8E6E1;
+    --color-accent: #C5A880;
 }

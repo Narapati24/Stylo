@@ -26,8 +26,12 @@
         </div>
         <div class="flex items-center gap-6">
             <a href="{{ url('/') }}" target="_blank" class="text-sm hover:text-accent transition-colors">View Store</a>
-            <div class="text-sm font-medium">
-                {{ Auth::user()->name ?? 'Admin' }}
+            <div class="flex items-center gap-4">
+                <span class="text-sm font-medium">{{ Auth::user()->name ?? 'Admin' }}</span>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-800">Logout</button>
+                </form>
             </div>
         </div>
     </nav>

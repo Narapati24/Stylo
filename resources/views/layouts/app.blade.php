@@ -44,9 +44,22 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 </a>
                 @auth
-                    <a href="{{ route('admin.dashboard') }}" class="text-xs font-bold border border-primary px-3 py-1 hover:bg-primary hover:text-white transition-colors">Admin</a>
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-accent transition-colors">
+                            <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white border border-secondary shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                            @if(Auth::user()->role === 'admin')
+                                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-bone">Admin Dashboard</a>
+                            @endif
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm hover:bg-bone text-red-600">Logout</button>
+                            </form>
+                        </div>
+                    </div>
                 @else
-                    <a href="" class="hover:text-accent transition-colors">Login</a>
+                    <a href="{{ route('login') }}" class="hover:text-accent transition-colors">Login</a>
                 @endauth
             </div>
         </div>

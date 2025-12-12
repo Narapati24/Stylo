@@ -1,65 +1,97 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Stylo</title>
 
-    <title>{{ config('app.name', 'Stylo') }} - Admin</title>
+    {{-- Vite / compiled CSS (Tailwind) --}}
+    @if (app()->environment('local') || file_exists(public_path('build')))
+        @vite('resources/css/app.css')
+    @endif
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col">
-    
-    <!-- Admin Navbar -->
-    <nav class="bg-white border-b border-secondary px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-4">
-            <a href="{{ url('/admin/dashboard') }}" class="font-serif text-2xl font-bold tracking-wide text-primary">
-                Stylo <span class="text-sm font-sans font-normal text-gray-500">Admin</span>
-            </a>
-        </div>
-        <div class="flex items-center gap-6">
-            <a href="{{ url('/') }}" target="_blank" class="text-sm hover:text-accent transition-colors">View Store</a>
-            <div class="flex items-center gap-4">
-                <span class="text-sm font-medium">{{ Auth::user()->name ?? 'Admin' }}</span>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-800">Logout</button>
-                </form>
-            </div>
-        </div>
+<body class="min-h-screen bg-bone font-sans" style="background: #FAF9F6;">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 p-6" style="background: #2C2A29; color: #FAF9F6;">
+    <div class="mb-6">
+        <a href="{{ route('admin.dashboard') }}" class="text-xl font-serif no-underline" style="color: #C5A880;">
+            Stylo — Admin
+        </a>
+    </div>
+
+    <nav aria-label="Main navigation">
+        <ul class="space-y-2">
+            @if(Route::has('admin.dashboard'))
+                <li>
+                    <a href="{{ route('admin.dashboard') }}"
+                       class="block px-3 py-2 rounded-none text-sm font-medium
+                              {{ request()->routeIs('admin.dashboard') ? 'text-accent' : 'text-white' }}"
+                       style="color: {{ request()->routeIs('admin.dashboard') ? '#C5A880' : '#FAF9F6' }};">
+                        Dashboard
+                    </a>
+                </li>
+            @endif
+
+            @if(Route::has('admin.products.index'))
+                <li>
+                    <a href="{{ route('admin.products.index') }}"
+                       class="block px-3 py-2 rounded-none text-sm font-medium
+                              {{ request()->routeIs('admin.products.*') ? 'text-accent' : 'text-white' }}"
+                       style="color: {{ request()->routeIs('admin.products.*') ? '#C5A880' : '#FAF9F6' }};">
+                        Products
+                    </a>
+                </li>
+            @endif
+
+            @if(Route::has('admin.products.create'))
+                <li>
+                    <a href="{{ route('admin.products.create') }}"
+                       class="block px-3 py-2 rounded-none text-sm font-medium text-white hover:text-accent"
+                       style="color: #FAF9F6;">
+                        + Add Product
+                    </a>
+                </li>
+            @endif
+
+            {{-- Optional links: hanya tampil jika route ada --}}
+            @if(Route::has('admin.categories.index'))
+                <li>
+                    <a href="{{ route('admin.categories.index') }}"
+                       class="block px-3 py-2 rounded-none text-sm font-medium text-white hover:text-accent">
+                        Categories
+                    </a>
+                </li>
+            @endif
+
+            @if(Route::has('admin.reports.index'))
+                <li>
+                    <a href="{{ route('admin.reports.index') }}"
+                       class="block px-3 py-2 rounded-none text-sm font-medium text-white hover:text-accent">
+                        Reports
+                    </a>
+                </li>
+            @endif
+        </ul>
     </nav>
 
-    <div class="flex flex-1">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-secondary hidden md:block min-h-full">
-            <div class="py-6 px-4 space-y-2">
-                <p class="px-2 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Master Data</p>
-                
-                <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('admin.categories.*') ? 'bg-secondary text-primary' : 'text-gray-600 hover:bg-bone hover:text-primary' }} transition-colors">
-                    Categories
-                </a>
-                <!-- Add more links here -->
-            </div>
-        </aside>
+    <div class="mt-6 border-t pt-4" style="border-color: #E8E6E1;">
+        <p class="text-xs text-white/70">Signed in as</p>
+        <p class="text-sm font-medium text-white">{{ auth()->user()->name ?? 'Admin' }}</p>
+    </div>
+</aside>
 
         <!-- Main Content -->
         <main class="flex-1 p-8">
-            @if (session('success'))
-                <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-none relative" role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
+            <header class="mb-6 pb-4 border-b" style="border-color: #E8E6E1;">
+                <h2 class="text-2xl font-serif text-primary">@yield('title', 'Dashboard')</h2>
+            </header>
 
-            @if (session('error'))
-                <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-none relative" role="alert">
-                    <span class="block sm:inline">{{ session('error') }}</span>
+            @if(session('success'))
+                <div class="mb-4 px-4 py-2 rounded-none" style="background: #C5A880; color: #2C2A29;">
+                    {{ session('success') }}
                 </div>
             @endif
 

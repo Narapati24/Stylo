@@ -45,6 +45,10 @@
                 <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('admin.categories.*') ? 'bg-secondary text-primary' : 'text-gray-600 hover:bg-bone hover:text-primary' }} transition-colors">
                     Categories
                 </a>
+
+                <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm font-medium {{ request()->routeIs('admin.products.*') ? 'bg-secondary text-primary' : 'text-gray-600 hover:bg-bone hover:text-primary' }} transition-colors">
+                    Products
+                </a>
                 <!-- Add more links here -->
             </div>
         </aside>

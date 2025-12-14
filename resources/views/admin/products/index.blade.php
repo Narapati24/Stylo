@@ -18,18 +18,22 @@
             </tr>
         </thead>
         <tbody>
-            <!-- TODO: Replace with dynamic data -->
-            @forelse($products ?? [] as $product)
+
+            @forelse($products as $product)
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;">{{ $product->id }}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                        <img src="https://via.placeholder.com/50" alt="Product" width="50">
+                        <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Product" width="50">
                     </td>
                     <td style="padding: 10px; border: 1px solid #ddd;">{{ $product->name }}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">Rp {{ number_format($product->price) }}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <a href="{{ route('admin.products.edit', $product->id) }}" style="color: blue; margin-right: 10px;">Edit</a>
-                        <a href="#" style="color: red;">Delete</a>
+                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Delete</button>
+                        </form>
                     </td>
                 </tr>
             @empty

@@ -56,9 +56,12 @@
         <div style="margin-bottom: 15px;">
             <label style="display: block; margin-bottom: 5px;">Thumbnail</label>
             <input type="file" name="thumbnail">
+            @error('thumbnail')
+                <span class="text-red-500 text-xs">{{ $message }}</span>
+            @enderror
         </div>
-
         <button type="submit" style="background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Update Product</button>
+
     </form>
 
     <script>

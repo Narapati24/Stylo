@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $totalProducts = \App\Models\Products::count(); // hitung total produk
+        return view('admin.dashboard', compact('totalProducts'));
     }
 }

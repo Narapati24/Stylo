@@ -3,38 +3,86 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Products;
+use App\Models\Category;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('admin.products.index');
+        $products = Products::latest()->paginate(10);
+        return view('admin.products.index', compact('products'));
     }
 
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        // Validation logic here
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+        $data = $request->validated();
+
+        $data['slug'] = Str::slug($data['name']) . '-' . time();
+
+        if ($request->hasFile('thumbnail')) {
+            $data['thumbnail'] = $request->file('thumbnail')
+                ->store('products', 'public');
+        }
+
+        Products::create($data);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product created successfully.');
     }
 
-    public function edit($id)
+    public function edit(Products $product)
     {
-        return view('admin.products.edit');
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, Products $product)
     {
-        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+        $data = $request->validated();
+
+        $data['slug'] = Str::slug($data['name']) . '-' . time();
+
+        if ($request->hasFile('thumbnail')) {
+            if ($product->thumbnail) {
+                Storage::disk('public')->delete($product->thumbnail);
+            }
+
+            $data['thumbnail'] = $request->file('thumbnail')
+                ->store('products', 'public');
+        }
+
+        $product->update($data);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Products $product)
     {
-        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
+        if ($product->thumbnail) {
+            Storage::disk('public')->delete($product->thumbnail);
+        }
+
+        $product->delete();
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product deleted successfully.');
+    }
+
+    public function dashboard()
+    {
+        $totalProducts = Products::count();
+        return view('admin.dashboard', compact('totalProducts'));
     }
 }

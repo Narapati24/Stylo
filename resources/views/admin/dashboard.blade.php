@@ -10,7 +10,7 @@
         <!-- Stat Card 1 -->
         <div class="bg-white border border-secondary p-6">
             <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Total Products</h3>
-            <p class="font-serif text-4xl text-primary">120</p>
+            <p class="font-serif text-4xl text-primary">{{ $totalProducts }}</p>
             <div class="mt-4 text-xs text-green-600 flex items-center gap-1">
                 <span>↑ 12%</span>
                 <span class="text-gray-400">vs last month</span>

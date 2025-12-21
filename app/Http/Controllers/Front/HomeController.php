@@ -4,16 +4,26 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Products;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('front.home');
+        $categories = Category::all();
+
+        $products = Products::query()
+            ->filterCategory($request->category_id)
+            ->latest()
+            ->get();
+
+        return view('front.home', compact('products', 'categories'));
     }
 
     public function show($id)
     {
-        return view('front.product-detail');
+        $product = Products::findOrFail($id);
+        return view('front.product-detail', compact('product'));
     }
 }

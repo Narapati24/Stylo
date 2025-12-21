@@ -17,4 +17,12 @@ class Products extends Model
         'thumbnail',
 
     ];
+
+    // filter category
+    public function scopeFilterCategory($query, $categoryId)
+    {
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+    }
 }

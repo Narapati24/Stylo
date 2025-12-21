@@ -17,4 +17,11 @@ class Products extends Model
         'thumbnail',
 
     ];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->thumbnail
+            ? asset('storage/' . $this->thumbnail)
+            : 'https://via.placeholder.com/150';
+    }
 }

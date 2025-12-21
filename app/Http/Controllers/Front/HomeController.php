@@ -14,6 +14,7 @@ class HomeController extends Controller
         $categories = Category::all();
 
         $products = Products::query()
+            ->search($request->search)
             ->filterCategory($request->category_id)
             ->latest()
             ->get();

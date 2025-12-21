@@ -25,4 +25,15 @@ class Products extends Model
             $query->where('category_id', $categoryId);
         }
     }
+
+    // search
+    public function scopeSearch($query, $keyword)
+    {
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%');
+            });
+        }
+    }
 }

@@ -18,6 +18,15 @@ class Products extends Model
 
     ];
 
+
+    public function getImageUrlAttribute()
+    {
+        return $this->thumbnail
+            ? asset('storage/' . $this->thumbnail)
+            : 'https://via.placeholder.com/150';
+    }
+
+
     // filter category
     public function scopeFilterCategory($query, $categoryId)
     {

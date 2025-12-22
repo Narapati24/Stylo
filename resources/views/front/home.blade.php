@@ -8,13 +8,13 @@
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
         <!-- Example Product Cards -->
-        @for($i = 1; $i <= 8; $i++)
+        @foreach($products as $product)
             @include('components.product-card', [
-                'title' => 'Product ' . $i,
-                'price' => 'Rp ' . number_format(rand(50000, 500000)),
-                'image' => 'https://via.placeholder.com/300x300',
-                'link' => route('front.product', $i)
+                'title' => $product->name,
+                'price' => 'Rp ' . number_format($product->price),
+                'image' => $product->image_url,
+                'link' => route('front.product', $product->id)
             ])
-        @endfor
+        @endforeach
     </div>
 @endsection

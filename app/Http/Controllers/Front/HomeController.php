@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\Products;
 
 class HomeController extends Controller
 {

@@ -147,6 +147,7 @@ npm install
 ```bash
 cp .env.example .env
 php artisan key:generate
+php artisan storage:link
 ```
 
 Configure database in `.env`  
@@ -173,6 +174,12 @@ npm run dev
 php artisan serve
 ```
 
+### 6. Optimization & Caching (Production)
+```bash
+php artisan config:cache
+php artisan route:cache
+```
+
 ---
 
 ## 👥 Team Members
@@ -180,7 +187,7 @@ php artisan serve
 | NPM | Name | Role | GitHub Profile |
 | :--- | :--- | :--- | :--- |
 | `223040155` | **Narapati Keysa Anandi** | Project Manager / Fullstack | [Link](https://github.com/Narapati24) |
-| `XXXXXXXXX` | **[Member Name]** | Backend Developer | [Link](https://github.com/) |
-| `XXXXXXXXX` | **[Member Name]** | Backend Developer | [Link](https://github.com/) |
-| `XXXXXXXXX` | **[Member Name]** | Frontend Developer | [Link](https://github.com/) |
-| `XXXXXXXXX` | **[Member Name]** | Frontend Developer | [Link](https://github.com/) |
+| `233040065` | **Emeralda Iffatud Diana** | Backend Developer | [Link](https://github.com/Diana-museo) |
+| `233040073` | **Rafi Asmaul Rizal** | Backend Developer | [Link](https://github.com/rafiasmaulrizal) |
+| `233040061` | **Ellen Aplida Zalni** | Frontend Developer | [Link](https://github.com/twenteazfour) |
+| `233040066` | **Daffa Al Bani** | Frontend Developer | [Link](https://github.com/Daffalbn) |

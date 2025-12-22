@@ -5,20 +5,26 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Products::all()->map(function ($product) {
-            $product->image_url = asset('storage/' . $product->image);
-            return $product;
-        });
-        return view('front.home', compact('products'));
+        $categories = Category::all();
+
+        $products = Products::query()
+            ->search($request->search)
+            ->filterCategory($request->category_id)
+            ->latest()
+            ->get();
+
+        return view('front.home', compact('products', 'categories'));
     }
 
     public function show($id)
     {
-        return view('front.product-detail');
+        $product = Products::findOrFail($id);
+        return view('front.product-detail', compact('product'));
     }
 }

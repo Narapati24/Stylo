@@ -18,10 +18,31 @@ class Products extends Model
 
     ];
 
+
     public function getImageUrlAttribute()
     {
         return $this->thumbnail
             ? asset('storage/' . $this->thumbnail)
             : 'https://via.placeholder.com/150';
+    }
+
+
+    // filter category
+    public function scopeFilterCategory($query, $categoryId)
+    {
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+    }
+
+    // search
+    public function scopeSearch($query, $keyword)
+    {
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%');
+            });
+        }
     }
 }

@@ -24,11 +24,7 @@
                 @forelse($categories as $category)
                 <tr class="border-b border-secondary hover:bg-bone transition-colors">
                     <td class="py-4 px-4">
-                        @if($category->image)
-                            <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" class="w-12 h-12 object-cover border border-secondary">
-                        @else
-                            <div class="w-12 h-12 bg-secondary flex items-center justify-center text-gray-400 text-xs">No Img</div>
-                        @endif
+                        <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="w-12 h-12 object-cover border border-secondary">
                     </td>
                     <td class="py-4 px-4 font-medium text-primary">{{ $category->name }}</td>
                     <td class="py-4 px-4 text-gray-600">{{ $category->slug }}</td>

@@ -23,7 +23,7 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;">{{ $product->id }}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                        <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Product" width="50">
+                        <img src="{{ $product->image_url }}" alt="Product" width="50">
                     </td>
                     <td style="padding: 10px; border: 1px solid #ddd;">{{ $product->name }}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">Rp {{ number_format($product->price) }}</td>

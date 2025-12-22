@@ -55,6 +55,11 @@
         <!-- Thumbnail -->
         <div style="margin-bottom: 15px;">
             <label style="display: block; margin-bottom: 5px;">Thumbnail</label>
+            @if($product->thumbnail)
+                <div style="margin-bottom: 10px;">
+                    <img src="{{ $product->image_url }}" alt="Current Thumbnail" width="100">
+                </div>
+            @endif
             <input type="file" name="thumbnail">
             @error('thumbnail')
                 <span class="text-red-500 text-xs">{{ $message }}</span>

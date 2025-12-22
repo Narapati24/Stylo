@@ -21,6 +21,10 @@ class Products extends Model
 
     public function getImageUrlAttribute()
     {
+        if ($this->thumbnail && str_starts_with($this->thumbnail, 'http')) {
+            return $this->thumbnail;
+        }
+
         return $this->thumbnail
             ? asset('storage/' . $this->thumbnail)
             : 'https://via.placeholder.com/150';

@@ -34,7 +34,7 @@
             <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
             @if($category->image)
                 <div class="mb-2">
-                    <img src="{{ Storage::url($category->image) }}" alt="Current Image" class="h-20 w-auto border border-secondary">
+                    <img src="{{ $category->image_url }}" alt="Current Image" class="h-20 w-auto border border-secondary">
                 </div>
             @endif
             <input type="file" name="image" id="image" 

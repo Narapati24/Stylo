@@ -13,9 +13,10 @@
     
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @livewireStyles
 </head>
-<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col">
+<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col" x-data="{ searchOpen: false }">
     
     <!-- Navbar -->
     <nav class="bg-bone border-b border-secondary px-6 py-6 sticky top-0 z-50">
@@ -35,10 +36,10 @@
 
             <!-- Icons -->
             <div class="flex items-center gap-6">
-                <a href="#" class="hover:text-accent transition-colors">
+                <button @click="searchOpen = !searchOpen" class="hover:text-accent transition-colors focus:outline-none">
                     <span class="sr-only">Search</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </a>
+                </button>
                 <a href="{{ route('front.cart') }}" class="hover:text-accent transition-colors relative">
                     <span class="sr-only">Cart</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
@@ -61,6 +62,71 @@
                 @else
                     <a href="{{ route('login') }}" class="hover:text-accent transition-colors">Login</a>
                 @endauth
+            </div>
+        </div>
+
+        <!-- Search Overlay -->
+        <div x-show="searchOpen" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-2"
+             class="absolute top-full left-0 w-full bg-white border-b border-secondary shadow-lg z-40 p-4"
+             style="display: none;">
+            <div class="max-w-3xl mx-auto" x-data="{
+                query: '',
+                results: [],
+                search() {
+                    if (this.query.length < 2) {
+                        this.results = [];
+                        return;
+                    }
+                    axios.get('{{ route('front.home') }}', { params: { search: this.query } })
+                        .then(response => {
+                            this.results = response.data.products;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            }">
+                <div class="relative">
+                    <input x-model="query" 
+                           @input.debounce.300ms="search()"
+                           type="text" 
+                           placeholder="Search for products..." 
+                           class="w-full px-4 py-3 rounded-lg border border-secondary focus:border-primary focus:ring-0 bg-bone"
+                           autofocus
+                    >
+                    <button @click="searchOpen = false" class="absolute right-3 top-3 text-gray-400 hover:text-primary">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Search Results -->
+                <div x-show="results.length > 0" class="mt-4">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Products</h3>
+                    <div class="grid grid-cols-1 gap-2">
+                        <template x-for="product in results" :key="product.id">
+                            <a :href="product.url" class="flex items-center gap-4 p-2 hover:bg-bone rounded-lg transition-colors">
+                                <img :src="product.image_url" :alt="product.name" class="w-12 h-12 object-cover rounded-md">
+                                <div>
+                                    <h4 class="text-sm font-medium text-primary" x-text="product.name"></h4>
+                                    <p class="text-xs text-accent font-bold" x-text="'Rp ' + product.price"></p>
+                                </div>
+                            </a>
+                        </template>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <a :href="'{{ route('front.home') }}?search=' + query" class="text-xs text-primary hover:underline">View all results</a>
+                    </div>
+                </div>
+                
+                <div x-show="query.length >= 2 && results.length === 0" class="mt-4 text-center text-gray-500 text-sm">
+                    No products found.
+                </div>
             </div>
         </div>
     </nav>

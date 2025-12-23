@@ -3,44 +3,45 @@
 @section('title', 'Manage Products')
 
 @section('content')
-    <div style="margin-bottom: 20px;">
-        <a href="{{ route('admin.products.create') }}" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">+ Add New Product</a>
-    </div>
-
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+<x-admin.layout-crud title="Products" :create-url="route('admin.products.create')" create-text="Add New Product">
+    <table class="w-full text-left border-collapse">
         <thead>
-            <tr style="background: #f1f1f1; text-align: left;">
-                <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
-                <th style="padding: 10px; border: 1px solid #ddd;">Image</th>
-                <th style="padding: 10px; border: 1px solid #ddd;">Name</th>
-                <th style="padding: 10px; border: 1px solid #ddd;">Price</th>
-                <th style="padding: 10px; border: 1px solid #ddd;">Actions</th>
+            <tr class="border-b border-secondary text-xs uppercase tracking-wider text-gray-500">
+                <th class="py-4 px-4 font-medium">No</th>
+                <th class="py-4 px-4 font-medium">Image</th>
+                <th class="py-4 px-4 font-medium">Name</th>
+                <th class="py-4 px-4 font-medium">Price</th>
+                <th class="py-4 px-4 font-medium text-right">Actions</th>
             </tr>
         </thead>
-        <tbody>
-
+        <tbody class="text-sm">
             @forelse($products as $product)
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{ $product->id }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Product" width="50">
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{{ $product->name }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">Rp {{ number_format($product->price) }}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <a href="{{ route('admin.products.edit', $product->id) }}" style="color: blue; margin-right: 10px;">Edit</a>
-                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?');">
+            <tr class="border-b border-secondary hover:bg-bone transition-colors">
+                <td class="py-4 px-4 text-gray-600">{{ $products->firstItem() + $loop->index }}</td>
+                <td class="py-4 px-4">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover border border-secondary">
+                </td>
+                <td class="py-4 px-4 font-medium text-primary">{{ $product->name }}</td>
+                <td class="py-4 px-4 text-gray-600">Rp {{ number_format($product->price) }}</td>
+                <td class="py-4 px-4 text-right space-x-2">
+                    <a href="{{ route('admin.products.edit', $product->id) }}" class="text-gray-600 hover:text-accent font-medium">Edit</a>
+                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                    </form>
+                </td>
+            </tr>
             @empty
-                <tr>
-                    <td colspan="5" style="padding: 20px; text-align: center; border: 1px solid #ddd;">No products found.</td>
-                </tr>
+            <tr>
+                <td colspan="5" class="py-8 text-center text-gray-500">No products found.</td>
+            </tr>
             @endforelse
         </tbody>
     </table>
+    
+    <div class="mt-4">
+        {{ $products->links() }}
+    </div>
+</x-admin.layout-crud>
 @endsection

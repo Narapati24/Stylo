@@ -24,7 +24,13 @@ Route::name('front.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/product/{id}', [HomeController::class, 'show'])->name('product');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
-    // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+        Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
+    });
 });
 
 // Admin Routes

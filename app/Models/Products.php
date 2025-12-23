@@ -30,6 +30,11 @@ class Products extends Model
             : 'https://via.placeholder.com/150';
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 
     // filter category
     public function scopeFilterCategory($query, $categoryId)

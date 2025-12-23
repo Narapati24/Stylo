@@ -10,11 +10,32 @@ use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use Illuminate\Http\Request;
+
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Products::latest()->paginate(10);
+        $query = Products::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $products = $query->latest()->paginate(10);
+        
+        if ($request->has('search')) {
+            $products->appends(['search' => $request->get('search')]);
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.products.partials.table-rows', compact('products'))->render(),
+                'pagination' => $products->links()->toHtml()
+            ]);
+        }
+
         return view('admin.products.index', compact('products'));
     }
 

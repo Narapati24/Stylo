@@ -7,8 +7,11 @@
 
     {{-- Vite / compiled CSS (Tailwind) --}}
     @if (app()->environment('local') || file_exists(public_path('build')))
-        @vite('resources/css/app.css')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+
+    {{-- Alpine.js --}}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     @livewireStyles
 </head>

@@ -16,7 +16,7 @@
     <div>
         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
         <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}" 
-            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2"
+            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2"
             required>
         @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
     </div>
@@ -25,7 +25,7 @@
     <div>
         <label for="slug" class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
         <input type="text" name="slug" id="slug" value="{{ old('slug', $product->slug) }}" 
-            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2"
+            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2"
             required>
         @error('slug') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
     </div>
@@ -34,7 +34,7 @@
     <div>
         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
         <select name="category_id" id="category_id" 
-            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2"
+            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2"
             required>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
@@ -49,7 +49,7 @@
     <div>
         <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price</label>
         <input type="number" name="price" id="price" value="{{ old('price', $product->price) }}" 
-            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2"
+            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2"
             required>
         @error('price') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
     </div>
@@ -58,7 +58,7 @@
     <div>
         <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
         <input type="number" name="stock" id="stock" value="{{ old('stock', $product->stock) }}" 
-            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2"
+            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2"
             required>
         @error('stock') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
     </div>
@@ -67,7 +67,7 @@
     <div>
         <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
         <textarea name="description" id="description" rows="4" 
-            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2">{{ old('description', $product->description) }}</textarea>
+            class="w-full border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2">{{ old('description', $product->description) }}</textarea>
         @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
     </div>
 
@@ -76,11 +76,11 @@
         <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
         @if($product->thumbnail)
             <div class="mb-2">
-                <img src="{{ $product->image_url }}" alt="Current Thumbnail" class="h-20 w-auto border border-secondary">
+                <img src="{{ $product->image_url }}" alt="Current Thumbnail" class="h-20 w-auto border border-secondary rounded-lg">
             </div>
         @endif
         <input type="file" name="thumbnail" id="thumbnail" 
-            class="w-full border border-secondary p-2 rounded-none text-sm file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-sm file:font-semibold file:bg-secondary file:text-primary hover:file:bg-accent transition-colors">
+            class="w-full border border-secondary p-2 rounded-lg text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-secondary file:text-primary hover:file:bg-accent transition-colors">
         @error('thumbnail') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
     </div>
 </x-admin.layout-form>

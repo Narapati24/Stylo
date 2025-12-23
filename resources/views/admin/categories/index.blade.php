@@ -43,7 +43,7 @@
                    @input.debounce.500ms="performSearch()" 
                    type="text" 
                    placeholder="Search categories..." 
-                   class="w-full md:w-1/3 border-secondary focus:border-primary focus:ring-0 rounded-none bg-bone px-4 py-2 text-sm placeholder-gray-400">
+                   class="w-full md:w-1/3 border-secondary focus:border-primary focus:ring-0 rounded-lg bg-bone px-4 py-2 text-sm placeholder-gray-400">
         </div>
 
         <table class="w-full text-left border-collapse">

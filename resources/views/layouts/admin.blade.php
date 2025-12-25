@@ -14,7 +14,7 @@
 </head>
 <body class="min-h-screen bg-bone font-sans" style="background: #FAF9F6;">
     
-    {{-- Admin Top Navbar --}}
+    {{-- Admin Top Navbar (Putih) --}}
     <nav class="sticky top-0 z-50 shadow-md" style="background: #FFF; border-bottom: 1px solid #E8E6E1;">
         <div class="flex justify-between items-center px-8 py-3">
             <div class="flex items-center gap-4">
@@ -24,7 +24,7 @@
             </div>
             <div class="flex items-center gap-6">
                 
-                {{-- transition-colors dan hover style secara eksplisit --}}
+                {{-- ✅ PERBAIKAN: Menambahkan transition-colors dan hover style secara eksplisit --}}
                 <a href="{{ url('/') }}" target="_blank" 
                    class="text-sm **transition-colors**" 
                    style="color: #2C2A29; text-decoration:none;"
@@ -51,17 +51,17 @@
     </nav>
 
 
-    {{--Struktur Utama Konten--}}
+    {{-- Struktur Utama Konten (Sama seperti sebelumnya) --}}
     <div class="flex flex-1" style="align-items:flex-start; overflow:visible; gap:0;">
         
-        {{-- Sidebar Gelap --}}
+        {{-- Sidebar Gelap (Sticky) --}}
         <aside
             class="w-64 p-6"
             style="background: #2C2A29; color: #FAF9F6; position:sticky; top:60px; z-index:50; min-height:calc(100vh - 60px); box-shadow: 0 2px 8px rgba(0,0,0,0.06); pointer-events:auto; display: flex; flex-direction: column;">
             
             <div style="flex-grow: 1;">
                 <nav aria-label="Main navigation">
-                    {{--Navigasi Sidebar--}}
+                    {{-- Navigasi Sidebar (Sudah ada transition-colors) --}}
                     <ul style="list-style:none; padding:0; margin:0; display:block;">
                         
                         {{-- Dashboard --}}
@@ -113,7 +113,7 @@
             </div>
 
 
-            {{-- Signed in as (Bottom Section) --}}
+            {{-- Wadah untuk Signed in as (Bottom Section) --}}
             <div class="mt-6 border-t pt-4" style="border-color: #E8E6E1; margin-top: auto;">
                 <p class="text-xs" style="color: rgba(255,255,255,0.75); margin:0 0 6px 0;">Signed in as</p>
                 <p class="text-sm font-medium" style="margin:0 0 8px 0;">{{ auth()->user()->name ?? 'Admin' }}</p>

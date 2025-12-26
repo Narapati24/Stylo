@@ -7,6 +7,7 @@ use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\GoogleController;
 
@@ -40,4 +41,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Product Resource Routes
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
+
+    // Report Routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('/reports/export', [ReportController::class, 'exportPdf'])->name('reports.export');
 });

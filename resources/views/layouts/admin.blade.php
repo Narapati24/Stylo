@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Stylo</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png">
+
 
     {{-- Vite / compiled CSS (Tailwind) --}}
     @if (app()->environment('local') || file_exists(public_path('build')))

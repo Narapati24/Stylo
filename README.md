@@ -1,130 +1,193 @@
-# Stylo - Fashion E-commerce Web Application
+# ✨ Stylo - Fashion E-commerce Web Application
 
 ![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css)
 ![Livewire](https://img.shields.io/badge/Livewire-3.x-4E56A6?style=for-the-badge&logo=livewire)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql)
 
-**Stylo** is a modern Fashion E-commerce Monolith built with **Laravel 12**, **Blade**, **Livewire**, and **Tailwind CSS**. The project follows a strict "Earthy Luxury" design aesthetic and clean architectural patterns.
+Stylo is a modern fashion e-commerce monolith built with Laravel 12, Blade, Livewire, and Tailwind CSS.  
+The application follows a curated **Earthy Luxury** design system with a clean and strict architecture.
 
 ---
 
-##  Design System: "Earthy Luxury"
+## 🌿 Design System: Earthy Luxury
 
-We use a custom Tailwind configuration to enforce the design system.
+A custom Tailwind configuration is used to enforce visual consistency.
 
 ### Colors
 | Name | Class | Hex | Usage |
 | :--- | :--- | :--- | :--- |
-| **Bone White** | `bg-bone` | `#FAF9F6` | Main Background |
-| **Espresso** | `bg-primary` / `text-primary` | `#2C2A29` | Primary Text, Buttons, Footer |
-| **Sand** | `bg-secondary` / `border-secondary` | `#E8E6E1` | Borders, Secondary Backgrounds |
-| **Muted Gold** | `text-accent` / `bg-accent` | `#C5A880` | Accents, Hover States, Badges |
+| **Bone White** | `bg-bone` | `#FAF9F6` | Main background |
+| **Espresso** | `bg-primary` / `text-primary` | `#2C2A29` | Primary text, buttons, footer |
+| **Sand** | `bg-secondary` / `border-secondary` | `#E8E6E1` | Borders, secondary surfaces |
+| **Muted Gold** | `text-accent` / `bg-accent` | `#C5A880` | Accents, hover states, badges |
 
-### Fonts
-*   **Headings:** `font-serif` (Playfair Display)
-*   **Body:** `font-sans` (Inter)
+### Typography
+- **Headings:** `font-serif` (Playfair Display)  
+- **Body:** `font-sans` (Inter)
 
-### UI Components
-*   **Buttons:** Sharp edges (`rounded-none`).
-*   **Inputs:** Sharp edges, minimal borders.
-
----
-
-##  Tech Stack & Rules
-
-*   **Backend:** Laravel 12 (PHP 8.2+)
-*   **Frontend:** Blade Templates + Tailwind CSS v4
-*   **Interactivity:** Laravel Livewire (Search, Filter, Dynamic Forms)
-*   **Database:** MySQL 8.0
-*   **Authentication:** Laravel Socialite (Google Auth) + Custom Auth
-
-**Strict Rules:**
-*    NO Bootstrap
-*    NO React/Vue (except Livewire)
-*    NO jQuery
-*    Use Resource Controllers & FormRequests
+### UI Guidelines
+- Inputs follow a minimal aesthetic with subtle borders  
 
 ---
 
-##  Folder Structure
+## 🧩 Tech Stack & Development Rules
 
-``napp/
+### Core Stack
+- **Backend:** Laravel 12 (PHP 8.2+)  
+- **Frontend:** Blade Templates + Tailwind CSS v4  
+- **Interactivity:** Livewire 3  
+- **Database:** MySQL 8.0  
+- **Authentication:** Laravel Socialite (Google OAuth)  
+
+### Project Rules
+- No Bootstrap  
+- No React/Vue (except Livewire)  
+- No jQuery  
+- Use Resource Controllers & Form Requests  
+
+---
+
+## 🌿 Branching & Commit Workflow
+
+### 1. Branch Naming
+
+Use the following format:
+
+```
+feature/{feature-name}
+```
+
+Example:
+
+```
+feature/product-crud
+feature/google-auth
+```
+
+Never commit directly to `main`.
+
+---
+
+### 2. How to Commit (Conventional Commits)
+
+1. Create your branch:
+```bash
+git checkout -b feature/{feature-name}
+```
+
+2. Stage changes:
+```bash
+git add .
+```
+
+3. Commit with the correct prefix:
+```bash
+git commit -m "feat: add product CRUD"
+```
+
+4. Push the branch:
+```bash
+git push -u origin feature/{feature-name}
+```
+
+5. Open a Pull Request and wait for review.
+
+---
+
+## 📝 Conventional Commit Prefixes
+
+- `feat:` New feature  
+- `fix:` Bug fix  
+- `docs:` Documentation updates  
+- `style:` Formatting-only changes  
+- `refactor:` Code restructure without behavior change  
+- `test:` Tests added or updated  
+- `chore:` Config or dependency updates  
+- `perf:` Performance improvements  
+
+---
+
+## 📁 Folder Structure
+
+```
+app/
   Http/
     Controllers/
-      Admin/          # Admin-facing controllers (CRUD)
+      Admin/          # Admin-facing CRUD controllers
       Front/          # Customer-facing controllers
-      Auth/           # Authentication logic
-    Requests/         # Form Validation classes
+      Auth/           # Authentication controllers
+    Requests/         # Form validation classes
+
 resources/
   views/
     admin/            # Admin templates
     front/            # Customer templates
-    layouts/          # Master layouts (admin.blade.php, app.blade.php)
+    layouts/          # Master layouts
     components/       # Reusable Blade components
-` 
+```
 
 ---
 
-##  Commit Convention
+## 🚀 Setup Instructions
 
-We follow the **Conventional Commits** specification. Please use the following prefixes:
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Narapati24/Stylo.git
+cd Stylo
+```
 
-*   `feat:` New feature (e.g., `feat: add product crud`)
-*   `fix:` Bug fix (e.g., `fix: resolve login redirect issue`)
-*   `docs:` Documentation changes (e.g., `docs: update readme`)
-*   `style:` Formatting, missing semi-colons, etc; no code change
-*   `refactor:` Refactoring production code
-*   `test:` Adding tests, refactoring test; no production code change
-*   `chore:` Updating build tasks, package manager configs, etc.
-*   `perf:` Code change that improves performance
+### 2. Install Dependencies
+```bash
+composer install
+npm install
+```
 
----
+### 3. Configure Environment
+```bash
+cp .env.example .env
+php artisan key:generate
+php artisan storage:link
+```
 
-##  Setup Instructions
+Configure database in `.env`  
+Add Google OAuth:
 
-1.  **Clone the repository**
-    `ash
-    git clone https://github.com/Narapati24/Stylo.git
-    cd Stylo
-    ` 
+```
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+```
 
-2.  **Install Dependencies**
-    `ash
-    composer install
-    npm install
-    ` 
+### 4. Run Migrations & Seeders
+```bash
+php artisan migrate:fresh --seed
+```
 
-3.  **Environment Setup**
-    `ash
-    cp .env.example .env
-    php artisan key:generate
-    ` 
-    *Configure your database in `.env`.*
-    *Add Google OAuth credentials in `.env`:*
-    `env
-    GOOGLE_CLIENT_ID=your_client_id
-    GOOGLE_CLIENT_SECRET=your_client_secret
-    GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
-    ` 
+Default accounts:
+- Admin: `admin@stylo.com`  
+- Customer: `customer@stylo.com`
 
-4.  **Run Migrations & Seeders**
-    `ash
-    php artisan migrate:fresh --seed
-    ` 
-    *Creates Admin (`admin@stylo.com`) and Customer (`customer@stylo.com`) accounts.*
+### 5. Run Development Servers
+```bash
+npm run dev
+php artisan serve
+```
 
-5.  **Run Development Server**
-    `ash
-    npm run dev   # Terminal 1
-    php artisan serve # Terminal 2
-    ` 
+### 6. Optimization & Caching (Production)
+```bash
+php artisan config:cache
+php artisan route:cache
+```
 
 ---
 
-##  Team
+## 👥 Team Members
 
-| Role | Name | GitHub |
-| :--- | :--- | :--- |
-| **Project Manager** | Narapati Keysa Anandi | [@Narapati24](https://github.com/Narapati24) |
-| **Team Member** | ... | ... |
+| NPM | Name | Role | GitHub Profile |
+| :--- | :--- | :--- | :--- |
+| `223040155` | **Narapati Keysa Anandi** | Project Manager / Fullstack | [Link](https://github.com/Narapati24) |
+| `233040065` | **Emeralda Iffatud Diana** | Backend Developer | [Link](https://github.com/Diana-museo) |
+| `233040073` | **Rafi Asmaul Rizal** | Backend Developer | [Link](https://github.com/rafiasmaulrizal) |
+| `233040061` | **Ellen Aplida Zalni** | Frontend Developer | [Link](https://github.com/twenteazfour) |
+| `233040066` | **Daffa Al Bani** | Frontend Developer | [Link](https://github.com/Daffalbn) |

@@ -27,6 +27,11 @@ Route::name('front.')->group(function () {
     // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 });
 
+// Compatibility: some packages or views may call route('home') without the
+// 'front.' prefix. Provide a simple alias that redirects to the front home.
+Route::get('/home', function () {
+    return redirect()->route('front.home');
+})->name('home');
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

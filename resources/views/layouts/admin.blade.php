@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Stylo</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/png">
+
 
     {{-- Vite / compiled CSS (Tailwind) --}}
     @if (app()->environment('local') || file_exists(public_path('build')))
@@ -34,7 +37,7 @@
             </div>
             <div class="flex items-center gap-6">
                 
-                {{-- transition-colors dan hover style secara eksplisit --}}
+                {{-- ✅ PERBAIKAN: Menambahkan transition-colors dan hover style secara eksplisit --}}
                 <a href="{{ url('/') }}" target="_blank" 
                    class="text-sm **transition-colors**" 
                    style="color: #2C2A29; text-decoration:none;"

@@ -40,13 +40,22 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create([
-                'name' => $category['name'],
-                'slug' => Str::slug($category['name']),
-                'image' => $category['image'],
-                'description' => 'Explore our exclusive ' . $category['name'] . ' with earthy tones and premium materials.',
-                'is_active' => true,
-            ]);
+            $source = database_path('seeders/assets/categories/' . $category['file']);
+            $target = 'categories/' . $category['file'];
+
+            if (!Storage::disk('public')->exists($target)) {
+                Storage::disk('public')->put($target, File::get($source));
+            }
+
+            Category::updateOrCreate(
+                ['slug' => Str::slug($category['name'])],
+                [
+                    'name' => $category['name'],
+                    'image' => $target, // PATH yang valid
+                    'description' => 'Explore our exclusive ' . $category['name'],
+                    'is_active' => true,
+                ]
+            );
         }
     }
 }

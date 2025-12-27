@@ -38,8 +38,11 @@
 
     <!-- Recent Products -->
     <div class="bg-white border border-secondary rounded-lg shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-secondary">
+        <div class="p-6 border-b border-secondary flex items-center justify-between">
             <h3 class="font-serif text-xl text-primary">Recently Added Products</h3>
+            <a href="#" class="bg-primary text-white px-6 py-2 text-sm font-medium hover:bg-accent transition-colors rounded-lg">
+                🗐  Download Laporan
+            </a>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">

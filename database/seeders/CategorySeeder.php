@@ -23,7 +23,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'name' => 'Women\'s Collection',
-                'image' => 'https://placehold.co/600x400?text=Women',
+                'image' => 'womenwear.jpg',
             ],
             [
                 'name' => 'Accessories',

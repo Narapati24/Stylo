@@ -27,7 +27,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'name' => 'Accessories',
-                'image' => 'https://placehold.co/600x400?text=Accessories',
+                'image' => 'accessories.jpg',
             ],
             [
                 'name' => 'Footwear',

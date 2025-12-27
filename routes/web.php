@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -25,6 +26,9 @@ Route::name('front.')->group(function () {
     Route::get('/product/{id}', [HomeController::class, 'show'])->name('product');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+    // ABOUT PAGE
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
 });
 
 // Compatibility: some packages or views may call route('home') without the

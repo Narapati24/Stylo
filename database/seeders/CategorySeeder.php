@@ -31,7 +31,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'name' => 'Footwear',
-                'image' => 'https://placehold.co/600x400?text=Footwear',
+                'image' => 'footwear.jpg',
             ],
             [
                 'name' => 'New Arrivals',

@@ -6,6 +6,8 @@ use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class CategorySeeder extends Seeder
 {
@@ -17,7 +19,7 @@ class CategorySeeder extends Seeder
         $categories = [
             [
                 'name' => 'Men\'s Collection',
-                'image' => 'https://placehold.co/600x400?text=Men',
+                'image' => 'menwear.jpg',
             ],
             [
                 'name' => 'Women\'s Collection',

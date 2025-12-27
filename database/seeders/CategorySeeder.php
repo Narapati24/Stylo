@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'name' => 'New Arrivals',
-                'image' => 'https://placehold.co/600x400?text=New+Arrivals',
+                'image' => 'newarrivals.jpg',
             ],
         ];
 

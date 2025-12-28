@@ -7,6 +7,8 @@ use App\Models\Products;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Faker\Factory as Faker;
 
 class ProductSeeder extends Seeder
@@ -56,6 +58,13 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
+            // 🔍 Cari category berdasarkan nama
+            $category = Category::where('name', $product['category'])->first();
+
+            if (!$category) {
+                continue; // skip kalau category belum ada
+            }
+
             $source = database_path('seeders/assets/products/' . $product['thumbnail']);
             $target = 'products/' . $product['thumbnail'];
 
@@ -70,7 +79,7 @@ class ProductSeeder extends Seeder
                     'name' => $product['name'],
                     'price' => $product['price'],
                     'stock' => $product['stock'],
-                    'thumbnail' => $thumbnail,
+                    'thumbnail' => $target,
                     'description' => 'High quality ' . $product['name'],
                 ]
             );

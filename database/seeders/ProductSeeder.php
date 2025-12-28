@@ -38,9 +38,13 @@ class ProductSeeder extends Seeder
                 'stock' => 20,
                 'thumbnail' => 'watch.jpg',
             ],
-
-
-
+            [
+                'category' => 'Footwear',
+                'name' => 'Running Shoes',
+                'price' => 350000,
+                'stock' => 40,
+                'thumbnail' => 'shoes.jpg',
+            ],
         ];
 
         foreach ($products as $product) {

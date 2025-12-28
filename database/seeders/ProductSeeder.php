@@ -45,6 +45,14 @@ class ProductSeeder extends Seeder
                 'stock' => 40,
                 'thumbnail' => 'shoes.jpg',
             ],
+            [
+                'category' => 'New Arrivals',
+                'name' => 'Winter Jacket',
+                'price' => 450000,
+                'stock' => 15,
+                'thumbnail' => 'jacket.jpg',
+            ],
+
         ];
 
         foreach ($products as $product) {

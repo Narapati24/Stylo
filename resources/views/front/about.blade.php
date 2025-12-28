@@ -2,7 +2,6 @@
 
 <link href="{{ asset('css/about.css') }}" rel="stylesheet">
 
-
 @section('content')
 <div class="about-container">
     <section class="about-hero">
@@ -11,7 +10,7 @@
             <p class="about-subtitle">We're bridging the gap between raw natural inspiration and sophisticated design. Stylo offers a curated collection for the modern individual who values quiet luxury and conscious living.</p>
         </div>
         <div class="hero-image-wrapper">
-            <img src="{{ asset('images/long shirts.jpg') }}" alt="Stylo Classic Shirts" class="hero-img">
+            <img src="{{ asset('images/long shirt2.jpg') }}" alt="Stylo Classic Shirts" class="hero-img">
         </div>
     </section>
 

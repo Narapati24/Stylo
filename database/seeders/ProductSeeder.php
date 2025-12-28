@@ -56,14 +56,13 @@ class ProductSeeder extends Seeder
             ],
 
         ];
-
         foreach ($products as $product) {
             $category = Category::where('name', $product['category'])->first();
 
             if (!$category) {
                 continue; 
             }
-
+            
             $source = database_path('seeders/assets/products/' . $product['thumbnail']);
             $target = 'products/' . $product['thumbnail'];
 

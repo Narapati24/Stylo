@@ -58,11 +58,10 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            // 🔍 Cari category berdasarkan nama
             $category = Category::where('name', $product['category'])->first();
 
             if (!$category) {
-                continue; // skip kalau category belum ada
+                continue; 
             }
 
             $source = database_path('seeders/assets/products/' . $product['thumbnail']);

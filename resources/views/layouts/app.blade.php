@@ -33,7 +33,7 @@
             <div class="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide uppercase">
                 <a href="{{ route('front.home') }}" class="hover:text-accent transition-colors">Home</a>
                 <a href="#" class="hover:text-accent transition-colors">Shop</a>
-                <a href="#" class="hover:text-accent transition-colors">Collections</a>
+                <a href="{{ route('front.collection') }}" class="hover:text-accent transition-colors">Collections</a>
                 <a href="#" class="hover:text-accent transition-colors">About</a>
             </div>
 

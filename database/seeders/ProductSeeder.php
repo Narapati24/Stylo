@@ -24,6 +24,14 @@ class ProductSeeder extends Seeder
                 'stock' => 50,
                 'thumbnail' => 'tshirt-men.jpg',
             ],
+            [
+                'category' => 'Women\'s Collection',
+                'name' => 'Elegant Women Dress',
+                'price' => 250000,
+                'stock' => 30,
+                'thumbnail' => 'dress-women.jpg',
+            ],
+
 
         ];
 

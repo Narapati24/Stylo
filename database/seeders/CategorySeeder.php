@@ -40,8 +40,8 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            $source = database_path('seeders/assets/categories/' . $category['file']);
-            $target = 'categories/' . $category['file'];
+            $source = database_path('seeders/assets/categories/' . $category['image']);
+            $target = 'categories/' . $category['image'];
 
             if (!Storage::disk('public')->exists($target)) {
                 Storage::disk('public')->put($target, File::get($source));

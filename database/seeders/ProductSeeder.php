@@ -16,22 +16,36 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-        $categories = Category::all();
+        $products = [
+            [
+                'category' => 'Men\'s Collection',
+                'name' => 'Basic Men T-Shirt',
+                'price' => 150000,
+                'stock' => 50,
+                'thumbnail' => 'tshirt-men.jpg',
+            ],
 
-        foreach ($categories as $category) {
-            for ($i = 0; $i < 5; $i++) {
-                $name = $faker->words(3, true);
-                Products::create([
-                    'category_id' => $category->id,
-                    'name' => ucfirst($name),
-                    'slug' => Str::slug($name),
-                    'price' => $faker->numberBetween(100000, 2000000),
-                    'stock' => $faker->numberBetween(10, 100),
-                    'description' => $faker->paragraph(3),
-                    'thumbnail' => 'https://placehold.co/600x400?text=' . urlencode($name),
-                ]);
+        ];
+
+        foreach ($products as $product) {
+            $source = database_path('seeders/assets/products/' . $product['thumbnail']);
+            $target = 'products/' . $product['thumbnail'];
+
+            if (!Storage::disk('public')->exists($target)) {
+                Storage::disk('public')->put($target, File::get($source));
             }
+
+            Products::updateOrCreate(
+                ['slug' => Str::slug($product['name'])],
+                [
+                    'category_id' => $category->id,
+                    'name' => $product['name'],
+                    'price' => $product['price'],
+                    'stock' => $product['stock'],
+                    'thumbnail' => $thumbnail,
+                    'description' => 'High quality ' . $product['name'],
+                ]
+            );
         }
     }
 }

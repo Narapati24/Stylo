@@ -31,6 +31,14 @@ class ProductSeeder extends Seeder
                 'stock' => 30,
                 'thumbnail' => 'dress-women.jpg',
             ],
+            [
+                'category' => 'Accessories',
+                'name' => 'Luxury Wrist Watch',
+                'price' => 500000,
+                'stock' => 20,
+                'thumbnail' => 'watch.jpg',
+            ],
+
 
 
         ];

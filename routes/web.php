@@ -28,13 +28,10 @@ Route::name('front.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
-<<<<<<< HEAD
     Route::get('/collection', [CollectionController::class, 'index'])
         ->name('collection');
-=======
     // ABOUT PAGE
     Route::get('/about', [AboutController::class, 'index'])->name('about');
->>>>>>> feature/about-page
 });
 
 // Compatibility: some packages or views may call route('home') without the

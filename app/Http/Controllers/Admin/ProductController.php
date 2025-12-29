@@ -23,11 +23,22 @@ class ProductController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
+        if ($request->has('category') && $request->get('category') !== '') {
+            $category = $request->get('category');
+            $query->where('category_id', $category);
+        }
+
         $products = $query->latest()->paginate(10);
-        
+
         if ($request->has('search')) {
             $products->appends(['search' => $request->get('search')]);
         }
+
+        if ($request->has('category')) {
+            $products->appends(['category' => $request->get('category')]);
+        }
+
+        $categories = Category::orderBy('name')->get();
 
         if ($request->ajax()) {
             return response()->json([
@@ -36,7 +47,7 @@ class ProductController extends Controller
             ]);
         }
 
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index', compact('products', 'categories'));
     }
 
     public function create()

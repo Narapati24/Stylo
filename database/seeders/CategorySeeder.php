@@ -6,6 +6,8 @@ use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class CategorySeeder extends Seeder
 {
@@ -17,34 +19,43 @@ class CategorySeeder extends Seeder
         $categories = [
             [
                 'name' => 'Men\'s Collection',
-                'image' => 'https://placehold.co/600x400?text=Men',
+                'image' => 'menwear.jpg',
             ],
             [
                 'name' => 'Women\'s Collection',
-                'image' => 'https://placehold.co/600x400?text=Women',
+                'image' => 'womenwear.jpg',
             ],
             [
                 'name' => 'Accessories',
-                'image' => 'https://placehold.co/600x400?text=Accessories',
+                'image' => 'accessories.jpg',
             ],
             [
                 'name' => 'Footwear',
-                'image' => 'https://placehold.co/600x400?text=Footwear',
+                'image' => 'footwear.jpg',
             ],
             [
                 'name' => 'New Arrivals',
-                'image' => 'https://placehold.co/600x400?text=New+Arrivals',
+                'image' => 'newarrivals.jpg',
             ],
         ];
 
         foreach ($categories as $category) {
-            Category::create([
-                'name' => $category['name'],
-                'slug' => Str::slug($category['name']),
-                'image' => $category['image'],
-                'description' => 'Explore our exclusive ' . $category['name'] . ' with earthy tones and premium materials.',
-                'is_active' => true,
-            ]);
+            $source = database_path('seeders/assets/categories/' . $category['image']);
+            $target = 'categories/' . $category['image'];
+
+            if (!Storage::disk('public')->exists($target)) {
+                Storage::disk('public')->put($target, File::get($source));
+            }
+
+            Category::updateOrCreate(
+                ['slug' => Str::slug($category['name'])],
+                [
+                    'name' => $category['name'],
+                    'image' => $target, // PATH yang valid
+                    'description' => 'Explore our exclusive ' . $category['name'],
+                    'is_active' => true,
+                ]
+            );
         }
     }
 }

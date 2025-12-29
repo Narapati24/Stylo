@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-<link rel="stylesheet" href="{{ asset('css/collection.css') }}">
-
 @section('content')
 <div class="collection-container">
     <header class="collection-header">

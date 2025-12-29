@@ -5,6 +5,7 @@ use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\CollectionController;
+use App\Http\Controllers\Front\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -27,8 +28,13 @@ Route::name('front.')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
+<<<<<<< HEAD
     Route::get('/collection', [CollectionController::class, 'index'])
         ->name('collection');
+=======
+    // ABOUT PAGE
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
+>>>>>>> feature/about-page
 });
 
 // Compatibility: some packages or views may call route('home') without the

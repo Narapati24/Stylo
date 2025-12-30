@@ -123,6 +123,18 @@
                                 </a>
                             </li>
                         @endif
+                        {{-- Users --}}
+                        @if(Route::has('admin.users.index'))
+                            <li>
+                                <a href="{{ route('admin.users.index') }}"
+                                   class="block px-3 py-2 text-sm font-medium transition-colors rounded-md"
+                                   style="background: {{ request()->routeIs('admin.users.*') ? 'rgba(197, 168, 128, 0.1)' : 'transparent' }}; color: {{ request()->routeIs('admin.users.*') ? '#C5A880' : '#FAF9F6' }}; text-decoration:none;"
+                                   onmouseover="this.style.background='rgba(255, 255, 255, 0.05)'"
+                                   onmouseout="this.style.background='{{ request()->routeIs('admin.users.*') ? 'rgba(197, 168, 128, 0.1)' : 'transparent' }}'">
+                                    Users
+                                </a>
+                            </li>
+                        @endif
                         {{-- Reports --}}
                         @if(Route::has('admin.reports.index'))
                             <li>

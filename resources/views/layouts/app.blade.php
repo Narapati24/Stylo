@@ -17,40 +17,36 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @livewireStyles
 </head>
-<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col" x-data="{ searchOpen: false }">
+<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col pt-[80px]" x-data="{ searchOpen: false }">
     
     <!-- Navbar -->
-    <nav class="bg-bone border-b border-secondary px-6 py-6 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            <a href="{{ route('front.home') }}" class="font-serif text-3xl font-bold tracking-wide text-primary">
-                Stylo
-            </a>
+    <header class="main-header">
+        <div class="header-container">
+            <a href="{{ route('front.home') }}" class="header-logo">Stylo</a>
 
-            <!-- Navigation -->
-            <div class="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide uppercase">
-                <a href="{{ route('front.home') }}" class="hover:text-accent transition-colors">Home</a>
-                <a href="#" class="hover:text-accent transition-colors">Shop</a>
-                <a href="{{ route('front.collection') }}" class="hover:text-accent transition-colors">Collections</a>
-                <a href="{{ route('front.about') }}" class="hover:text-accent transition-colors">About</a>
-            </div>
+            <nav class="header-nav">
+                <a href="{{ route('front.home') }}" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Shop</a>
+                <a href="{{ route('front.collection') }}" class="nav-link">Collections</a>
+                <a href="{{ route('front.about') }}" class="nav-link">About</a>
+            </nav>
 
-            <!-- Icons -->
-            <div class="flex items-center gap-6">
-                <button @click="searchOpen = !searchOpen" class="hover:text-accent transition-colors focus:outline-none">
-                    <span class="sr-only">Search</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <div class="header-actions">
+                <button @click="searchOpen = !searchOpen" class="header-icon focus:outline-none">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </button>
-                <a href="{{ route('front.cart') }}" class="hover:text-accent transition-colors relative">
-                    <span class="sr-only">Cart</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                <a href="{{ route('front.cart') }}" class="header-icon">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
                 </a>
                 @auth
                     <div class="relative group">
-                        <button class="flex items-center gap-1 hover:text-accent transition-colors">
-                            <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
+                        <button class="nav-link flex items-center gap-1" style="color: var(--color-primary);">
+                            <span>{{ Auth::user()->name }}</span>
                         </button>
                         <div class="absolute right-0 mt-2 w-48 bg-white border border-secondary shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                             @if(Auth::user()->role === 'admin')
@@ -63,7 +59,7 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="hover:text-accent transition-colors">Login</a>
+                    <a href="{{ route('login') }}" class="nav-link" style="color: var(--color-primary);">Login</a>
                 @endauth
             </div>
         </div>
@@ -132,7 +128,7 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content -->
     <main class="flex-1">
@@ -175,7 +171,5 @@
             &copy; {{ date('Y') }} Stylo. All rights reserved.
         </div>
     </footer>
-
-    @livewireScripts
 </body>
 </html>

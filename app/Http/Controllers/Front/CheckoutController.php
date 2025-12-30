@@ -23,7 +23,7 @@ class CheckoutController extends Controller
             $total_price += $item['price'] * $item['quantity'];
         }
         
-        return view('front.checkout', compact('cart', 'total_price'));
+        return view('front.orders.checkout', compact('cart', 'total_price'));
     }
 
     public function processCheckout(Request $request)

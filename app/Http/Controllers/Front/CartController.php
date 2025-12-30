@@ -15,7 +15,7 @@ class CartController extends Controller
         foreach($cart as $item) {
             $total_price += $item['price'] * $item['quantity'];
         }
-        return view('front.cart', compact('cart', 'total_price'));
+        return view('front.orders.cart', compact('cart', 'total_price'));
     }
 
     public function addToCart($id)

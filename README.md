@@ -2,10 +2,9 @@
 
 ![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css)
-![Livewire](https://img.shields.io/badge/Livewire-3.x-4E56A6?style=for-the-badge&logo=livewire)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql)
 
-Stylo is a modern fashion e-commerce monolith built with Laravel 12, Blade, Livewire, and Tailwind CSS.  
+Stylo is a modern fashion e-commerce monolith built with Laravel 12, Blade, and Tailwind CSS.  
 The application follows a curated **Earthy Luxury** design system with a clean and strict architecture.
 
 ---
@@ -36,13 +35,13 @@ A custom Tailwind configuration is used to enforce visual consistency.
 ### Core Stack
 - **Backend:** Laravel 12 (PHP 8.2+)  
 - **Frontend:** Blade Templates + Tailwind CSS v4  
-- **Interactivity:** Livewire 3  
+- **Interactivity:** Alpine.js  
 - **Database:** MySQL 8.0  
 - **Authentication:** Laravel Socialite (Google OAuth)  
 
 ### Project Rules
 - No Bootstrap  
-- No React/Vue (except Livewire)  
+- No React/Vue  
 - No jQuery  
 - Use Resource Controllers & Form Requests  
 

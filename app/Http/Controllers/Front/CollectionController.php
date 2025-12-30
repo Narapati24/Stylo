@@ -8,6 +8,6 @@ class CollectionController extends Controller
 {
     public function index()
     {
-        return view('front.collection');
+        return view('front.pages.collections');
     }
 }

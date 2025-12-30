@@ -18,67 +18,77 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $products = [
-            [
-                'category' => 'Men\'s Collection',
-                'name' => 'Basic Men T-Shirt',
-                'price' => 150000,
-                'stock' => 50,
-                'thumbnail' => 'tshirt-men.jpg',
-            ],
-            [
-                'category' => 'Women\'s Collection',
-                'name' => 'Elegant Women Dress',
-                'price' => 250000,
-                'stock' => 30,
-                'thumbnail' => 'dress-women.jpg',
-            ],
-            [
-                'category' => 'Accessories',
-                'name' => 'Luxury Wrist Watch',
-                'price' => 500000,
-                'stock' => 20,
-                'thumbnail' => 'watch.jpg',
-            ],
-            [
-                'category' => 'Footwear',
-                'name' => 'Running Shoes',
-                'price' => 350000,
-                'stock' => 40,
-                'thumbnail' => 'shoes.jpg',
-            ],
-            [
-                'category' => 'New Arrivals',
-                'name' => 'Winter Jacket',
-                'price' => 450000,
-                'stock' => 15,
-                'thumbnail' => 'jacket.jpg',
-            ],
+        $faker = Faker::create();
+        $files = File::files(database_path('seeders/assets/products'));
 
-        ];
-        foreach ($products as $product) {
-            $category = Category::where('name', $product['category'])->first();
-
-            if (!$category) {
-                continue; 
-            }
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            $nameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
             
-            $source = database_path('seeders/assets/products/' . $product['thumbnail']);
-            $target = 'products/' . $product['thumbnail'];
+            // Determine Category and Name based on filename
+            $categoryName = 'New Arrivals'; // Default
+            $productName = ucwords(str_replace(['-', '_'], ' ', $nameWithoutExtension));
+            $price = 100000;
 
-            if (!Storage::disk('public')->exists($target)) {
-                Storage::disk('public')->put($target, File::get($source));
+            if (str_contains($filename, 'kemeja')) {
+                $categoryName = 'Men\'s Collection';
+                $productName = 'Classic Shirt ' . preg_replace('/[^0-9]/', '', $filename);
+                $price = 250000;
+            } elseif (str_contains($filename, 'baju')) {
+                $categoryName = 'Women\'s Collection';
+                $productName = 'Stylish Top ' . preg_replace('/[^0-9]/', '', $filename);
+                $price = 150000;
+            } elseif (str_contains($filename, 'hoodie')) {
+                $categoryName = 'Men\'s Collection';
+                $productName = 'Urban Hoodie ' . preg_replace('/[^0-9]/', '', $filename);
+                $price = 350000;
+            } elseif (str_contains($filename, 'jaket') || str_contains($filename, 'jacket')) {
+                $categoryName = 'New Arrivals';
+                $productName = 'Premium Jacket ' . preg_replace('/[^0-9]/', '', $filename);
+                $price = 450000;
+            } elseif (str_contains($filename, 'dress')) {
+                $categoryName = 'Women\'s Collection';
+                $productName = 'Elegant Dress';
+                $price = 300000;
+            } elseif (str_contains($filename, 'shoes') || str_contains($filename, 'footwear')) {
+                $categoryName = 'Footwear';
+                $productName = 'Comfort Shoes';
+                $price = 400000;
+            } elseif (str_contains($filename, 'watch') || str_contains($filename, 'accessories')) {
+                $categoryName = 'Accessories';
+                $productName = 'Luxury Watch';
+                $price = 1500000;
+            } elseif (str_contains($filename, 'tshirt')) {
+                $categoryName = 'Men\'s Collection';
+                $productName = 'Essential T-Shirt';
+                $price = 120000;
             }
 
+            // Find Category
+            $category = Category::where('name', $categoryName)->first();
+            if (!$category) {
+                // Fallback if category not found (shouldn't happen if CategorySeeder ran)
+                continue;
+            }
+
+            // Copy image
+            $target = 'products/' . $filename;
+            if (!Storage::disk('public')->exists($target)) {
+                Storage::disk('public')->put($target, File::get($file->getPathname()));
+            }
+
+            // Create Product
             Products::updateOrCreate(
-                ['slug' => Str::slug($product['name'])],
+                ['slug' => Str::slug($productName . '-' . $filename)], // Unique slug
                 [
                     'category_id' => $category->id,
-                    'name' => $product['name'],
-                    'price' => $product['price'],
-                    'stock' => $product['stock'],
+                    'name' => $productName,
+                    'price' => $price + rand(0, 50000), // Add some variation
+                    'stock' => rand(10, 100),
                     'thumbnail' => $target,
-                    'description' => 'High quality ' . $product['name'],
+                    'description' => $faker->paragraph(),
+                    'created_at' => $faker->dateTimeBetween('-4 months', 'now'),
+                    'updated_at' => now(),
                 ]
             );
         }

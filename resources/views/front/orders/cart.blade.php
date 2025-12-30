@@ -21,44 +21,40 @@
                     <div class="border-t border-b border-gray-100">
                         <table class="w-full">
                             <tbody class="divide-y divide-gray-100">
+                                @forelse($cartItems as $item)
                                 <tr>
                                     <td class="py-8">
                                         <div class="flex gap-6">
                                             <div class="w-24 h-32 flex-shrink-0 border border-gray-100 rounded overflow-hidden bg-gray-100">
-                                                <img src="{{ asset('images/placeholder-product-1.png') }}" class="w-full h-full object-cover">
+                                                <img src="{{ Storage::url($item->product->thumbnail) }}" class="w-full h-full object-cover" alt="{{ $item->product->name }}">
                                             </div>
                                             <div class="flex flex-col justify-between py-1">
                                                 <div>
-                                                    <h3 class="font-bold text-gray-900 uppercase tracking-tight">White Long Tee</h3>
-                                                    <p class="text-sm text-gray-500 mt-1">Color: White | Size: M</p>
+                                                    <h3 class="font-bold text-gray-900 uppercase tracking-tight">{{ $item->product->name }}</h3>
+                                                    <p class="text-sm text-gray-500 mt-1">Price: Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
                                                 </div>
-                                                <p class="text-sm font-medium">Qty: 1</p>
+                                                <div class="flex items-center justify-between w-full">
+                                                    <p class="text-sm font-medium">Qty: {{ $item->quantity }}</p>
+                                                    <form action="{{ route('front.cart.remove', $item->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-xs text-red-500 hover:text-red-700 underline">Remove</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-8 text-right align-top">
-                                        <span class="font-bold text-lg text-gray-900">Rp 100.000</span>
+                                        <span class="font-bold text-lg text-gray-900">Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</span>
                                     </td>
                                 </tr>
+                                @empty
                                 <tr>
-                                    <td class="py-8">
-                                        <div class="flex gap-6">
-                                            <div class="w-24 h-32 flex-shrink-0 border border-gray-100 rounded overflow-hidden bg-gray-100">
-                                                <img src="{{ asset('images/placeholder-product-2.png') }}" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="flex flex-col justify-between py-1">
-                                                <div>
-                                                    <h3 class="font-bold text-gray-900 uppercase tracking-tight">Essential Hoodie</h3>
-                                                    <p class="text-sm text-gray-500 mt-1">Color: Black | Size: M</p>
-                                                </div>
-                                                <p class="text-sm font-medium">Qty: 1</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-8 text-right align-top">
-                                        <span class="font-bold text-lg text-gray-900">Rp 100.000</span>
+                                    <td colspan="2" class="py-8 text-center text-gray-500">
+                                        Your cart is empty. <a href="{{ route('front.collection') }}" class="underline text-black">Shop now</a>
                                     </td>
                                 </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -110,8 +106,8 @@
 
                         <div class="space-y-4 text-sm pb-8 border-b border-gray-200">
                             <div class="flex justify-between text-gray-600">
-                                <span>Item's total (2 items)</span>
-                                <span>Rp 200.000</span>
+                                <span>Item's total ({{ $cartItems->count() }} items)</span>
+                                <span>Rp {{ number_format($total_price, 0, ',', '.') }}</span>
                             </div>
                             <div class="flex justify-between text-gray-600">
                                 <span>Shipping</span>
@@ -121,7 +117,7 @@
 
                         <div class="flex justify-between font-bold text-xl py-8 text-gray-900">
                             <span>Order Total</span>
-                            <span>Rp 200.000</span>
+                            <span>Rp {{ number_format($total_price, 0, ',', '.') }}</span>
                         </div>
 
                         <button form="checkout-form" class="w-full bg-black text-white py-5 font-bold hover:bg-gray-800 transition-all uppercase tracking-widest text-sm active:scale-[0.98]">

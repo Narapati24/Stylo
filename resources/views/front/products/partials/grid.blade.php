@@ -12,6 +12,7 @@
 
         @if($hasProductComponent)
             @include('components.product-card', [
+                'id' => $product->id,
                 'title' => $product->name,
                 'price' => 'Rp ' . number_format($product->price),
                 'image' => $product->thumbnail,

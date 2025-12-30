@@ -3,49 +3,81 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $cart = session()->get('cart', []);
-        $total_price = 0;
-        foreach($cart as $item) {
-            $total_price += $item['price'] * $item['quantity'];
+        if (!Auth::check()) {
+             return redirect()->route('login')->with('error', 'Please login to view your cart');
         }
-        return view('front.orders.cart', compact('cart', 'total_price'));
+
+        $cartItems = Cart::where('user_id', Auth::id())
+                        ->with('product')
+                        ->latest()
+                        ->get();
+        
+        $total_price = 0;
+        foreach($cartItems as $item) {
+            if($item->product) {
+                 $total_price += $item->product->price * $item->quantity;
+            }
+        }
+
+        return view('front.orders.cart', compact('cartItems', 'total_price'));
     }
 
-    public function addToCart($id)
+    public function addToCart(Request $request, $id)
     {
+        if (!Auth::check()) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Please login to add items to cart'], 401);
+            }
+            return redirect()->route('login')->with('error', 'Please login to add items to cart');
+        }
+
         $product = Products::findOrFail($id);
-        $cart = session()->get('cart', []);
-    
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+        $userId = Auth::id();
+
+        $cartItem = Cart::where('user_id', $userId)
+                        ->where('product_id', $id)
+                        ->first();
+
+        if($cartItem) {
+            $cartItem->quantity++;
+            $cartItem->save();
         } else {
-            $cart[$id] = [
-                "id" => $product->id,
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price,
-                "thumbnail" => $product->thumbnail
-            ];
+            Cart::create([
+                'user_id' => $userId,
+                'product_id' => $id,
+                'quantity' => 1
+            ]);
         }
     
-        session()->put('cart', $cart);
+        if ($request->wantsJson()) {
+            return response()->json(['success' => 'Product added to cart successfully!']);
+        }
+
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
     
     public function removeFromCart($id)
     {
-        $cart = session()->get('cart');
-        if(isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart', $cart);
+        if (!Auth::check()) {
+             return redirect()->route('login');
         }
+
+        // Here $id is the ID of the cart item (primary key of carts table)
+        $cartItem = Cart::where('user_id', Auth::id())->where('id', $id)->first();
+        
+        if($cartItem) {
+            $cartItem->delete();
+        }
+        
         return redirect()->back()->with('success', 'Product removed successfully!');
     }
 }

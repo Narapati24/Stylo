@@ -18,7 +18,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col pt-[80px]" x-data="{ searchOpen: false }">
+<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col pt-20" x-data="{ searchOpen: false }">
     
     <!-- Navbar -->
     <header class="main-header">
@@ -171,5 +171,35 @@
             &copy; {{ date('Y') }} Stylo. All rights reserved.
         </div>
     </footer>
+    <!-- Toast Notification -->
+    <div 
+        x-data="{ 
+            show: false, 
+            message: '', 
+            type: 'success',
+            timeout: null,
+            notify(event) {
+                this.show = true;
+                this.message = event.detail.message;
+                this.type = event.detail.type || 'success';
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => this.show = false, 3000);
+            }
+        }" 
+        @notify.window="notify($event)"
+        x-show="show" 
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium flex items-center gap-3"
+        :class="type === 'success' ? 'bg-black' : 'bg-red-600'"
+        style="display: none;"
+    >
+        <span x-text="message"></span>
+    </div>
+
 </body>
 </html>

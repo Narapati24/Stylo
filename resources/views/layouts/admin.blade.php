@@ -84,7 +84,7 @@
             class="fixed md:sticky top-0 md:top-[61px] left-0 z-50 w-64 h-screen md:h-[calc(100vh-61px)] p-6 transition-transform duration-300 ease-in-out flex flex-col shadow-lg md:shadow-none overflow-y-auto"
             style="background: #2C2A29; color: #FAF9F6;">
             
-            <div class="flex-grow">
+            <div class="grow">
                 <nav aria-label="Main navigation">
                     {{--Navigasi Sidebar--}}
                     <ul class="space-y-1">
@@ -151,7 +151,7 @@
 
 
             {{-- Signed in as (Bottom Section) --}}
-            <div class="mt-6 border-t border-gray-700 pt-4 mt-auto">
+            <div class="mt-6 border-t border-gray-700 pt-4">
                 <p class="text-xs text-gray-400 mb-1">Signed in as</p>
                 <p class="text-sm font-medium mb-2">{{ auth()->user()->name ?? 'Admin' }}</p>
             </div>

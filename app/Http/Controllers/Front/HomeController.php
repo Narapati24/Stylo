@@ -19,6 +19,11 @@ class HomeController extends Controller
             ->latest();
 
         if ($request->ajax() || $request->wantsJson()) {
+            if ($request->has('partial')) {
+                $products = $query->take(8)->get();
+                return view('front.products.partials.grid', compact('products'));
+            }
+
             $products = $query->take(5)->get(); // Limit results for live search
             return response()->json([
                 'products' => $products->map(function($product) {
@@ -33,7 +38,7 @@ class HomeController extends Controller
             ]);
         }
 
-        $products = $query->get();
+        $products = $query->take(8)->get();
 
         return view('front.home', compact('products', 'categories'));
     }
@@ -41,6 +46,6 @@ class HomeController extends Controller
     public function show($id)
     {
         $product = Products::findOrFail($id);
-        return view('front.product-detail', compact('product'));
+        return view('front.products.show', compact('product'));
     }
 }

@@ -42,7 +42,7 @@
                                 </a>
                             </div>
                             <div class="mt-3 sm:mt-0 sm:ml-3">
-                                <a href="{{ url('/') }}" class="w-full flex items-center justify-center px-8 py-3 border border-primary text-base font-medium rounded-md text-primary bg-transparent hover:bg-bone hover:text-accent md:py-4 md:text-lg transition-colors">
+                                <a href="{{ url('/collection') }}" class="w-full flex items-center justify-center px-8 py-3 border border-primary text-base font-medium rounded-md text-primary bg-transparent hover:bg-bone hover:text-accent md:py-4 md:text-lg transition-colors">
                                     Explore Collection
                                 </a>
                             </div>
@@ -89,70 +89,52 @@
             </a>
         </div>
 
-        <!-- Filter Section -->
-        <div class="mb-8 flex flex-wrap gap-3 items-center">
-            <span class="text-sm font-medium text-charcoal">Filter:</span>
-            <a href="{{ route('front.home') }}#products-section" class="px-4 py-2 rounded-full {{ !request('category_id') ? 'bg-primary text-white' : 'bg-bone text-charcoal border border-secondary hover:bg-secondary' }} text-sm font-medium transition-colors">
-                All Products
-            </a>
-            @foreach($categories as $category)
-                <a href="{{ route('front.home', ['category_id' => $category->id]) }}#products-section" class="px-4 py-2 rounded-full {{ request('category_id') == $category->id ? 'bg-primary text-white' : 'bg-bone text-charcoal border border-secondary hover:bg-secondary' }} text-sm font-medium transition-colors">
-                    {{ $category->name }}
-                </a>
-            @endforeach
+        <!-- Filter Section & Grid -->
+        <div x-data="{
+            activeCategory: '{{ request('category_id') }}',
+            isLoading: false,
+            filter(categoryId) {
+                this.activeCategory = categoryId;
+                this.isLoading = true;
+                
+                axios.get('{{ route('front.home') }}', {
+                    params: {
+                        category_id: categoryId,
+                        partial: true
+                    }
+                })
+                .then(response => {
+                    document.getElementById('product-grid-container').innerHTML = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+            }
+        }">
+            <div class="mb-8 flex flex-wrap gap-3 items-center">
+                <span class="text-sm font-medium text-charcoal">Filter:</span>
+                <button @click="filter('')" 
+                        :class="!activeCategory ? 'bg-primary text-white' : 'bg-bone text-charcoal border border-secondary hover:bg-secondary'"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer">
+                    All Products
+                </button>
+                @foreach($categories as $category)
+                    <button @click="filter('{{ $category->id }}')" 
+                            :class="activeCategory == '{{ $category->id }}' ? 'bg-primary text-white' : 'bg-bone text-charcoal border border-secondary hover:bg-secondary'"
+                            class="px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer">
+                        {{ $category->name }}
+                    </button>
+                @endforeach
+            </div>
+
+            <!-- Product Grid -->
+            <section id="product-grid-container" class="transition-opacity duration-300" :class="{ 'opacity-50': isLoading }">
+                @include('front.products.partials.grid')
+            </section>
         </div>
-
-        <!-- Product Grid -->
-        <section>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-                @forelse($products as $product)
-                    @php
-                        $productLink = Route::has('front.product') ? route('front.product', $product->id) : url('/product/'.$product->id);
-                    @endphp
-
-                    @if($hasProductComponent)
-                        @include('components.product-card', [
-                            'title' => $product->name,
-                            'price' => 'Rp ' . number_format($product->price),
-                            'image' => $product->thumbnail,
-                            'link'  => $productLink
-                        ])
-                    @else
-                        {{-- Fallback sederhana dengan Tailwind jika komponen belum ada --}}
-                        <div class="group relative block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-secondary/30 h-full flex flex-col">
-                            <div class="relative aspect-[4/5] overflow-hidden bg-bone">
-                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            </div>
-                            <div class="p-5 flex flex-col flex-grow">
-                                <div class="mb-2 flex-grow">
-                                    <h3 class="text-lg font-serif font-medium text-primary truncate">{{ $product->name }}</h3>
-                                    <p class="text-charcoal/60 text-sm mb-2">{{ $product->category->name ?? 'Uncategorized' }}</p>
-                                    <p class="text-accent font-medium mt-1">{{ 'Rp ' . number_format($product->price) }}</p>
-                                </div>
-                                <div class="mt-4 pt-4 border-t border-secondary/20">
-                                    <a href="{{ $productLink }}" class="w-full text-sm px-4 py-2 rounded-md bg-primary text-white font-medium hover:bg-charcoal transition inline-block text-center">
-                                        View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                @empty
-                    <div class="col-span-full py-12 text-center">
-                        <p class="text-gray-500 text-lg">No products found in this category.</p>
-                        <a href="{{ route('front.home') }}" class="mt-4 inline-block text-accent hover:text-primary transition-colors font-medium">
-                            View all products &rarr;
-                        </a>
-                    </div>
-                @endforelse
-            </div>
-            
-            <div class="mt-8 text-center sm:hidden">
-                <a href="#products-section" class="text-sm font-medium text-accent hover:text-primary transition-colors">
-                    See all products <span aria-hidden="true"> &rarr;</span>
-                </a>
-            </div>
-        </section>
     </div>
 </div>
 @endsection

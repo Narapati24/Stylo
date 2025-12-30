@@ -1,9 +1,9 @@
-<div class="group relative block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-secondary/30 h-full flex flex-col">
+<div class="group relative block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-secondary/30 h-full flex-col">
     <!-- Image area -->
-    <div class="relative aspect-[4/5] overflow-hidden bg-bone">
+    <div class="relative aspect-4/5 overflow-hidden bg-bone">
         <a href="{{ $link ?? '#' }}">
             <img
-                src="{{ $image ?? 'https://via.placeholder.com/600x800' }}"
+                src="{{ $image ? asset('storage/'.$image) : 'https://via.placeholder.com/600x800' }}"
                 alt="{{ $title ?? 'Product image' }}"
                 loading="lazy"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -11,9 +11,11 @@
         </a>
         
         {{-- Badge --}}
-        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-primary text-xs uppercase tracking-wider font-medium px-3 py-1 rounded-full shadow-sm">
-            New
-        </span>
+        @if(isset($created_at) && \Carbon\Carbon::parse($created_at)->gt(now()->subMonth()))
+            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-primary text-xs uppercase tracking-wider font-medium px-3 py-1 rounded-full shadow-sm">
+                New
+            </span>
+        @endif
 
         {{-- Quick Action Overlay (Desktop) --}}
         <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 hidden lg:block">
@@ -31,8 +33,8 @@
     </div>
 
     <!-- Content -->
-    <div class="p-5 flex flex-col flex-grow">
-        <div class="mb-2 flex-grow">
+    <div class="p-5 flex flex-col grow">
+        <div class="mb-2 grow">
             <h3 class="text-lg font-serif font-medium text-primary truncate" title="{{ $title }}">
                 <a href="{{ $link ?? '#' }}" class="hover:text-accent transition-colors">
                     {{ $title }}

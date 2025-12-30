@@ -15,8 +15,6 @@
 
     {{-- Alpine.js --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    @livewireStyles
 </head>
 <body class="min-h-screen bg-bone font-sans" style="background: #FAF9F6;" x-data="{ sidebarOpen: false }">
     
@@ -185,7 +183,5 @@
             </div>
         </main>
     </div>
-
-    @livewireScripts
 </body>
 </html>

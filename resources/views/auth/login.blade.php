@@ -1,32 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<header class="main-header">
-    <div class="header-container">
-        <a href="/" class="header-logo">Stylo</a>
 
-        <nav class="header-nav">
-            <a href="#" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Shop</a>
-            <a href="#" class="nav-link">Collections</a>
-            <a href="#" class="nav-link">About</a>
-        </nav>
-
-        <div class="header-actions">
-            <a href="#" class="header-icon">
-                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </a>
-            <a href="#" class="header-icon">
-                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                </svg>
-            </a>
-            <a href="/login" class="nav-link" style="color: var(--color-primary);">Login</a>
-        </div>
-    </div>
-</header>
 
 <div class="auth-page">
     <div class="auth-container">

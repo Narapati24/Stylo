@@ -21,47 +21,73 @@ class ProductSeeder extends Seeder
         $faker = Faker::create();
         $files = File::files(database_path('seeders/assets/products'));
 
+        $adjectives = ['Premium', 'Exclusive', 'Timeless', 'Modern', 'Elegant', 'Sophisticated', 'Minimalist', 'Urban', 'Classic', 'Heritage', 'Artisan', 'Refined', 'Signature', 'Essential', 'Luxe', 'Ethereal', 'Vintage', 'Contemporary'];
+        $materials = ['Cotton', 'Silk', 'Linen', 'Wool', 'Leather', 'Denim', 'Velvet', 'Cashmere', 'Satin', 'Canvas', 'Suede', 'Organic', 'Textured'];
+        
         foreach ($files as $file) {
             $filename = $file->getFilename();
             $nameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
             
-            // Determine Category and Name based on filename
+            // Determine Category and Base Name based on filename
             $categoryName = 'New Arrivals'; // Default
-            $productName = ucwords(str_replace(['-', '_'], ' ', $nameWithoutExtension));
+            $baseName = 'Piece';
             $price = 100000;
 
-            if (str_contains($filename, 'kemeja')) {
+            // Pick random adjective and material
+            $adj = $adjectives[array_rand($adjectives)];
+            $mat = $materials[array_rand($materials)];
+
+            if (str_contains($filename, 'kemeja') || $filename === 'shirts.jpg') {
                 $categoryName = 'Men\'s Collection';
-                $productName = 'Classic Shirt ' . preg_replace('/[^0-9]/', '', $filename);
-                $price = 250000;
+                $baseName = 'Oxford Shirt';
+                $price = 350000;
             } elseif (str_contains($filename, 'baju')) {
                 $categoryName = 'Women\'s Collection';
-                $productName = 'Stylish Top ' . preg_replace('/[^0-9]/', '', $filename);
-                $price = 150000;
+                $baseName = 'Blouse';
+                $price = 250000;
             } elseif (str_contains($filename, 'hoodie')) {
                 $categoryName = 'Men\'s Collection';
-                $productName = 'Urban Hoodie ' . preg_replace('/[^0-9]/', '', $filename);
-                $price = 350000;
-            } elseif (str_contains($filename, 'jaket') || str_contains($filename, 'jacket')) {
-                $categoryName = 'New Arrivals';
-                $productName = 'Premium Jacket ' . preg_replace('/[^0-9]/', '', $filename);
+                $baseName = 'Pullover Hoodie';
                 $price = 450000;
+            } elseif (str_contains($filename, 'jaket') || str_contains($filename, 'jacket') || str_contains($filename, 'outerwear')) {
+                $categoryName = 'New Arrivals';
+                $baseName = 'Bomber Jacket';
+                if (str_contains($filename, 'outerwear')) $baseName = 'Trench Coat';
+                $price = 650000;
             } elseif (str_contains($filename, 'dress')) {
                 $categoryName = 'Women\'s Collection';
-                $productName = 'Elegant Dress';
-                $price = 300000;
+                $baseName = 'Evening Dress';
+                $price = 550000;
             } elseif (str_contains($filename, 'shoes') || str_contains($filename, 'footwear')) {
                 $categoryName = 'Footwear';
-                $productName = 'Comfort Shoes';
-                $price = 400000;
-            } elseif (str_contains($filename, 'watch') || str_contains($filename, 'accessories')) {
+                $baseName = 'Sneakers';
+                $price = 800000;
+            } elseif (str_contains($filename, 'watch')) {
                 $categoryName = 'Accessories';
-                $productName = 'Luxury Watch';
-                $price = 1500000;
-            } elseif (str_contains($filename, 'tshirt')) {
+                $baseName = 'Chronograph Watch';
+                $price = 2500000;
+            } elseif (str_contains($filename, 'neckles') || str_contains($filename, 'accessories')) {
+                $categoryName = 'Accessories';
+                $baseName = 'Pendant Necklace';
+                $price = 450000;
+            } elseif (str_contains($filename, 'tshirt') || str_contains($filename, 't-shirt')) {
                 $categoryName = 'Men\'s Collection';
-                $productName = 'Essential T-Shirt';
-                $price = 120000;
+                $baseName = 'Tee';
+                $price = 180000;
+            } elseif (str_contains($filename, 'bottoms')) {
+                $categoryName = 'Men\'s Collection';
+                $baseName = 'Chino Pants';
+                $price = 300000;
+            }
+
+            // Construct Luxury Name
+            $namingPattern = rand(1, 3);
+            if ($namingPattern == 1) {
+                $productName = "$adj $mat $baseName";
+            } elseif ($namingPattern == 2) {
+                $productName = "$adj $baseName";
+            } else {
+                $productName = "The $adj $baseName";
             }
 
             // Find Category
@@ -79,7 +105,7 @@ class ProductSeeder extends Seeder
 
             // Create Product
             Products::updateOrCreate(
-                ['slug' => Str::slug($productName . '-' . $filename)], // Unique slug
+                ['slug' => Str::slug($productName . '-' . $filename)], // Unique slug using filename to avoid collisions
                 [
                     'category_id' => $category->id,
                     'name' => $productName,

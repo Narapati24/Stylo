@@ -8,26 +8,16 @@
     </header>
 
     <section class="collection-grid">
-        @php
-            $items = [
-                ['name' => 'Outerwear', 'slug' => 'outerwear', 'img' => 'outerwear.jpg'],
-                ['name' => 'Shirts', 'slug' => 'shirt', 'img' => 'shirts.jpg'],
-                ['name' => 'T-Shirts', 'slug' => 't-shirt', 'img' => 't-shirt.jpg'],
-                ['name' => 'Bottoms', 'slug' => 'bottoms', 'img' => 'bottoms.jpg'],
-                ['name' => 'Accessories', 'slug' => 'accessories', 'img' => 'accessories.jpg'],
-            ];
-        @endphp
-
-        @foreach($items as $item)
+        @foreach($categories as $category)
         <div class="category-card">
             <div class="category-image">
-                <img src="{{ asset('images/'.$item['img']) }}" alt="{{ $item['name'] }}">
+                <img src="{{ asset('storage/'.$category->image) }}" alt="{{ $category->name }}">
                 <div class="category-overlay">
-                    <a href="{{ url('/shop/'.$item['slug']) }}" class="view-btn">Explore {{ $item['name'] }}</a>
+                    <a href="{{ route('front.home', ['category_id' => $category->id]) }}" class="view-btn">Explore {{ $category->name }}</a>
                 </div>
             </div>
             <div class="category-info">
-                <h3>{{ $item['name'] }}</h3>
+                <h3>{{ $category->name }}</h3>
             </div>
         </div>
         @endforeach

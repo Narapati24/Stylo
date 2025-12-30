@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class CollectionController extends Controller
 {
     public function index()
     {
-        return view('front.pages.collections');
+        $categories = Category::where('is_active', true)->get();
+        return view('front.pages.collections', compact('categories'));
     }
 }

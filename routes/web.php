@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\CollectionController;
+use App\Http\Controllers\Front\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -26,6 +28,12 @@ Route::name('front.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/product/{id}', [HomeController::class, 'show'])->name('product');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+    Route::get('/collection', [CollectionController::class, 'index'])
+        ->name('collection');
+    // ABOUT PAGE
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Products;
+use App\Services\RajaOngkirService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(RajaOngkirService $rajaOngkirService)
     {
         if (!Auth::check()) {
              return redirect()->route('login')->with('error', 'Please login to view your cart');
@@ -27,6 +28,8 @@ class CartController extends Controller
                  $total_price += $item->product->price * $item->quantity;
             }
         }
+
+        // $provinces = $rajaOngkirService->getProvinces();
 
         return view('front.orders.cart', compact('cartItems', 'total_price'));
     }

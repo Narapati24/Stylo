@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\CollectionController;
 use App\Http\Controllers\Front\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -42,8 +43,14 @@ Route::name('front.')->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     
     Route::middleware(['auth'])->group(function () {
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/check/{id}', [OrderController::class, 'checkStatus'])->name('orders.check');
         Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
         Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
+        
+        // API for RajaOngkir
+        Route::get('/api/locations', [CheckoutController::class, 'searchLocation'])->name('api.locations');
+        Route::post('/api/shipping-cost', [CheckoutController::class, 'checkShippingCost'])->name('api.shipping-cost');
     });
 });
 

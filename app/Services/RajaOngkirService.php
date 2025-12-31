@@ -22,24 +22,22 @@ class RajaOngkirService
     {
         $response = Http::withHeaders([
             'key' => $this->apiKey
-        ])->get($this->baseUrl . '/province');
+        ])->get($this->baseUrl . '/destination/province');
 
         return $this->handleResponse($response);
     }
 
     /**
-     * Get cities by province ID
+     * Search destination (cities/subdistricts)
      */
-    public function getCities($provinceId = null)
+    public function searchDestination($query)
     {
-        $params = [];
-        if ($provinceId) {
-            $params['province'] = $provinceId;
-        }
-
         $response = Http::withHeaders([
             'key' => $this->apiKey
-        ])->get($this->baseUrl . '/city', $params);
+        ])->get($this->baseUrl . '/destination/domestic-destination', [
+            'search' => $query,
+            'limit' => 10
+        ]);
 
         return $this->handleResponse($response);
     }
@@ -47,8 +45,8 @@ class RajaOngkirService
     /**
      * Calculate shipping cost
      * 
-     * @param int $origin City ID of origin
-     * @param int $destination City ID of destination
+     * @param int $origin City/Subdistrict ID of origin
+     * @param int $destination City/Subdistrict ID of destination
      * @param int $weight Weight in grams
      * @param string $courier Courier code (jne, pos, tiki)
      */
@@ -56,7 +54,7 @@ class RajaOngkirService
     {
         $response = Http::withHeaders([
             'key' => $this->apiKey
-        ])->post($this->baseUrl . '/cost', [
+        ])->asForm()->post($this->baseUrl . '/calculate/domestic-cost', [
             'origin' => $origin,
             'destination' => $destination,
             'weight' => $weight,
@@ -69,8 +67,15 @@ class RajaOngkirService
     protected function handleResponse($response)
     {
         if ($response->successful()) {
-            return $response->json()['rajaongkir']['results'];
+            $body = $response->json();
+            if (isset($body['data'])) {
+                return $body['data'];
+            }
+            // Fallback for old structure if needed, or just return body
+            return $body;
         }
+
+        \Illuminate\Support\Facades\Log::error('RajaOngkir API Error: ' . $response->status() . ' - ' . $response->body());
 
         return [];
     }

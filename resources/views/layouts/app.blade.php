@@ -52,6 +52,7 @@
                             @if(Auth::user()->role === 'admin')
                                 <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-bone">Admin Dashboard</a>
                             @endif
+                            <a href="{{ route('front.orders.index') }}" class="block px-4 py-2 text-sm hover:bg-bone">My Orders</a>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="block w-full text-left px-4 py-2 text-sm hover:bg-bone text-red-600">Logout</button>

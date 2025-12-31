@@ -103,6 +103,15 @@ class ProductSeeder extends Seeder
                 Storage::disk('public')->put($target, File::get($file->getPathname()));
             }
 
+            // Generate Description
+            $descriptions = [
+                "Experience the $adj quality of our $productName. Made with the finest $mat, it defines luxury and comfort.",
+                "The $productName is a testament to $adj design. Featuring premium $mat, this $baseName is a must-have for your collection.",
+                "Discover the $adj charm of the $productName. Expertly crafted from $mat, it brings a touch of elegance to your wardrobe.",
+                "Elevate your look with the $productName. This $adj $baseName, woven from high-quality $mat, offers unmatched style and durability."
+            ];
+            $generatedDescription = $descriptions[array_rand($descriptions)];
+
             // Create Product
             Products::updateOrCreate(
                 ['slug' => Str::slug($productName . '-' . $filename)], // Unique slug using filename to avoid collisions
@@ -112,7 +121,7 @@ class ProductSeeder extends Seeder
                     'price' => $price + rand(0, 50000), // Add some variation
                     'stock' => rand(10, 100),
                     'thumbnail' => $target,
-                    'description' => $faker->paragraph(),
+                    'description' => $generatedDescription,
                     'created_at' => $faker->dateTimeBetween('-4 months', 'now'),
                     'updated_at' => now(),
                 ]

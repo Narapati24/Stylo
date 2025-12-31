@@ -35,6 +35,11 @@
 
                     <button type="submit" class="btn-primary">Sign In</button>
                 </form>
+
+                <div class="mt-6 text-center text-sm text-gray-600">
+                    Don't have an account? 
+                    <a href="{{ route('register') }}" class="font-medium text-primary hover:underline">Create one</a>
+                </div>
             </div>
         </main>
     </div>

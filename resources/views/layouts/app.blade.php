@@ -27,17 +27,19 @@
 
             <nav class="header-nav">
                 <a href="{{ route('front.home') }}" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Shop</a>
+                <a href="{{ route('front.shop') }}" class="nav-link">Shop</a>
                 <a href="{{ route('front.collection') }}" class="nav-link">Collections</a>
                 <a href="{{ route('front.about') }}" class="nav-link">About</a>
             </nav>
 
             <div class="header-actions">
+                @unless(request()->routeIs('front.shop'))
                 <button @click="searchOpen = !searchOpen" class="header-icon focus:outline-none">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </button>
+                @endunless
                 <a href="{{ route('front.cart') }}" class="header-icon">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
@@ -120,7 +122,7 @@
                         </template>
                     </div>
                     <div class="mt-4 text-center">
-                        <a :href="'{{ route('front.home') }}?search=' + query" class="text-xs text-primary hover:underline">View all results</a>
+                        <a :href="'{{ route('front.shop') }}?search=' + query" class="text-xs text-primary hover:underline">View all results</a>
                     </div>
                 </div>
                 

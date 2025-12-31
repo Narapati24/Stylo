@@ -31,7 +31,8 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 // Front Routes
 Route::name('front.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/product/{id}', [HomeController::class, 'show'])->name('product');
+    Route::get('/shop', [App\Http\Controllers\Front\ShopController::class, 'index'])->name('shop');
+    Route::get('/product/{slug}', [HomeController::class, 'show'])->name('product');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 

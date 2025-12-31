@@ -11,9 +11,9 @@
         @foreach($categories as $category)
         <div class="category-card">
             <div class="category-image">
-                <img src="{{ asset('storage/'.$category->image) }}" alt="{{ $category->name }}">
+                <img src="{{ $category->image_url }}" alt="{{ $category->name }}">
                 <div class="category-overlay">
-                    <a href="{{ route('front.home', ['category_id' => $category->id]) }}" class="view-btn">Explore {{ $category->name }}</a>
+                    <a href="{{ route('front.shop', ['category' => $category->slug]) }}" class="view-btn">Explore {{ $category->name }}</a>
                 </div>
             </div>
             <div class="category-info">

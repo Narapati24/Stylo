@@ -32,7 +32,7 @@ class HomeController extends Controller
                         'name' => $product->name,
                         'price' => number_format($product->price, 0, ',', '.'),
                         'image_url' => $product->image_url,
-                        'url' => route('front.product', $product->id)
+                        'url' => route('front.product', $product->slug)
                     ];
                 })
             ]);
@@ -43,9 +43,9 @@ class HomeController extends Controller
         return view('front.home', compact('products', 'categories'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $product = Products::findOrFail($id);
+        $product = Products::where('slug', $slug)->firstOrFail();
         return view('front.products.show', compact('product'));
     }
 }

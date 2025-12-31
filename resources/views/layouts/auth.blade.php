@@ -32,5 +32,58 @@
         @yield('content')
     </main>
 
+    <!-- Toast Notification -->
+    <div 
+        x-data="{ 
+            show: false, 
+            message: '', 
+            type: 'success',
+            timeout: null,
+            notify(message, type = 'success') {
+                this.show = true;
+                this.message = message;
+                this.type = type;
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => this.show = false, 3000);
+            }
+        }" 
+        @notify.window="notify($event.detail.message, $event.detail.type)"
+        x-show="show" 
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium flex items-center gap-3"
+        :class="{
+            'bg-black': type === 'success',
+            'bg-red-600': type === 'error',
+            'bg-yellow-500': type === 'warning',
+            'bg-blue-500': type === 'info'
+        }"
+        style="display: none;"
+    >
+        <span x-text="message"></span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                @if(session('success') || session('status'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('success') ?? session('status')), type: 'success' } }));
+                @endif
+                @if(session('error'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('error')), type: 'error' } }));
+                @endif
+                @if(session('warning'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('warning')), type: 'warning' } }));
+                @endif
+                @if(session('info'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('info')), type: 'info' } }));
+                @endif
+            }, 500);
+        });
+    </script>
 </body>
 </html>

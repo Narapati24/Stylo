@@ -102,10 +102,6 @@ class ProductController extends Controller
 
     public function destroy(Products $product)
     {
-        if ($product->thumbnail) {
-            Storage::disk('public')->delete($product->thumbnail);
-        }
-
         $product->delete();
 
         return redirect()->route('admin.products.index')

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'slug',
@@ -27,5 +30,10 @@ class Category extends Model
         return $this->image
             ? asset('storage/' . $this->image)
             : 'https://via.placeholder.com/150';
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Products::class);
     }
 }

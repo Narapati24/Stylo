@@ -86,8 +86,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
+        // Check if category has related products
+        if ($category->products()->count() > 0) {
+            return redirect()->back()->with('error', 'Cannot delete category because it has related products.');
         }
         
         $category->delete();

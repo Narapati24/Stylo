@@ -45,6 +45,7 @@ Route::name('front.')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/check/{id}', [OrderController::class, 'checkStatus'])->name('orders.check');
+        Route::get('/orders/invoice/{id}', [OrderController::class, 'downloadInvoice'])->name('orders.invoice');
         Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
         Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
         

@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Services\MidtransService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -40,9 +41,21 @@ class OrderController extends Controller
         $orders = Transaction::where('user_id', Auth::id())
             ->with('items.product')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(5);
 
         return view('front.orders.index', compact('orders'));
+    }
+
+    public function downloadInvoice($id)
+    {
+        $transaction = Transaction::where('user_id', Auth::id())->findOrFail($id);
+
+        if ($transaction->status !== 'PAID' && $transaction->status !== 'SUCCESS') {
+            return redirect()->back()->with('error', 'Invoice is only available for paid orders.');
+        }
+
+        $pdf = Pdf::loadView('front.orders.invoice', compact('transaction'));
+        return $pdf->download('invoice-' . $transaction->code . '.pdf');
     }
 
     public function checkStatus($id)

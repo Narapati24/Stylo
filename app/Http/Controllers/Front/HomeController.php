@@ -11,12 +11,12 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::where('is_active', true)->inRandomOrder()->get();
 
         $query = Products::query()
             ->search($request->search)
             ->filterCategory($request->category_id)
-            ->latest();
+            ->inRandomOrder();
 
         if ($request->ajax() || $request->wantsJson()) {
             if ($request->has('partial')) {

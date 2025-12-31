@@ -3,17 +3,49 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Products;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('front.home');
+        $categories = Category::where('is_active', true)->inRandomOrder()->get();
+
+        $query = Products::query()
+            ->search($request->search)
+            ->filterCategory($request->category_id)
+            ->inRandomOrder();
+
+        if ($request->ajax() || $request->wantsJson()) {
+            if ($request->has('partial')) {
+                $products = $query->take(8)->get();
+                return view('front.products.partials.grid', compact('products'));
+            }
+
+            $products = $query->take(5)->get(); // Limit results for live search
+            return response()->json([
+                'products' => $products->map(function($product) {
+                    return [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'price' => number_format($product->price, 0, ',', '.'),
+                        'image_url' => $product->image_url,
+                        'url' => route('front.product', $product->slug)
+                    ];
+                })
+            ]);
+        }
+
+        $products = $query->take(8)->get();
+
+        return view('front.home', compact('products', 'categories'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        return view('front.product-detail');
+        $product = Products::where('slug', $slug)->firstOrFail();
+        return view('front.products.show', compact('product'));
     }
 }

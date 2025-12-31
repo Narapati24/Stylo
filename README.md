@@ -2,10 +2,9 @@
 
 ![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css)
-![Livewire](https://img.shields.io/badge/Livewire-3.x-4E56A6?style=for-the-badge&logo=livewire)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql)
 
-Stylo is a modern fashion e-commerce monolith built with Laravel 12, Blade, Livewire, and Tailwind CSS.  
+Stylo is a modern fashion e-commerce monolith built with Laravel 12, Blade, and Tailwind CSS.  
 The application follows a curated **Earthy Luxury** design system with a clean and strict architecture.
 
 ---
@@ -36,13 +35,13 @@ A custom Tailwind configuration is used to enforce visual consistency.
 ### Core Stack
 - **Backend:** Laravel 12 (PHP 8.2+)  
 - **Frontend:** Blade Templates + Tailwind CSS v4  
-- **Interactivity:** Livewire 3  
+- **Interactivity:** Alpine.js  
 - **Database:** MySQL 8.0  
 - **Authentication:** Laravel Socialite (Google OAuth)  
 
 ### Project Rules
 - No Bootstrap  
-- No React/Vue (except Livewire)  
+- No React/Vue  
 - No jQuery  
 - Use Resource Controllers & Form Requests  
 
@@ -147,6 +146,7 @@ npm install
 ```bash
 cp .env.example .env
 php artisan key:generate
+php artisan storage:link
 ```
 
 Configure database in `.env`  
@@ -173,6 +173,24 @@ npm run dev
 php artisan serve
 ```
 
+### 6. Optimization & Caching (Production)
+```bash
+php artisan config:cache
+php artisan route:cache
+```
+
+### 7. Scheduler Setup (Cron Job)
+To enable automatic cancellation of pending transactions (older than 24 hours), add the following Cron entry to your server:
+
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+For local testing, you can run the command manually:
+```bash
+php artisan transactions:cancel-pending
+```
+
 ---
 
 ## 👥 Team Members
@@ -180,7 +198,7 @@ php artisan serve
 | NPM | Name | Role | GitHub Profile |
 | :--- | :--- | :--- | :--- |
 | `223040155` | **Narapati Keysa Anandi** | Project Manager / Fullstack | [Link](https://github.com/Narapati24) |
-| `XXXXXXXXX` | **[Member Name]** | Backend Developer | [Link](https://github.com/) |
-| `XXXXXXXXX` | **[Member Name]** | Backend Developer | [Link](https://github.com/) |
-| `XXXXXXXXX` | **[Member Name]** | Frontend Developer | [Link](https://github.com/) |
-| `XXXXXXXXX` | **[Member Name]** | Frontend Developer | [Link](https://github.com/) |
+| `233040065` | **Emeralda Iffatud Diana** | Backend Developer | [Link](https://github.com/Diana-museo) |
+| `233040073` | **Rafi Asmaul Rizal** | Backend Developer | [Link](https://github.com/rafiasmaulrizal) |
+| `233040061` | **Ellen Aplida Zalni** | Frontend Developer | [Link](https://github.com/twenteazfour) |
+| `233040066` | **Daffa Al Bani** | Frontend Developer | [Link](https://github.com/Daffalbn) |

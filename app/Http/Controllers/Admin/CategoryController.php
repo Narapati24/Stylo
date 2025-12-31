@@ -8,12 +8,32 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::latest()->paginate(10);
+        $query = Category::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $categories = $query->latest()->paginate(10);
+
+        if ($request->has('search')) {
+            $categories->appends(['search' => $request->get('search')]);
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.categories.partials.table-rows', compact('categories'))->render(),
+                'pagination' => $categories->links()->toHtml()
+            ]);
+        }
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -66,8 +86,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
+        // Check if category has related products
+        if ($category->products()->count() > 0) {
+            return redirect()->back()->with('error', 'Cannot delete category because it has related products.');
         }
         
         $category->delete();

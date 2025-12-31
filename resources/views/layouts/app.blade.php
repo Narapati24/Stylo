@@ -18,7 +18,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col pt-[80px]" x-data="{ searchOpen: false }">
+<body class="font-sans text-primary antialiased bg-bone min-h-screen flex flex-col pt-20" x-data="{ searchOpen: false }">
     
     <!-- Navbar -->
     <header class="main-header">
@@ -27,17 +27,19 @@
 
             <nav class="header-nav">
                 <a href="{{ route('front.home') }}" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Shop</a>
+                <a href="{{ route('front.shop') }}" class="nav-link">Shop</a>
                 <a href="{{ route('front.collection') }}" class="nav-link">Collections</a>
                 <a href="{{ route('front.about') }}" class="nav-link">About</a>
             </nav>
 
             <div class="header-actions">
+                @unless(request()->routeIs('front.shop'))
                 <button @click="searchOpen = !searchOpen" class="header-icon focus:outline-none">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </button>
+                @endunless
                 <a href="{{ route('front.cart') }}" class="header-icon">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
@@ -52,6 +54,7 @@
                             @if(Auth::user()->role === 'admin')
                                 <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-bone">Admin Dashboard</a>
                             @endif
+                            <a href="{{ route('front.orders.index') }}" class="block px-4 py-2 text-sm hover:bg-bone">My Orders</a>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="block w-full text-left px-4 py-2 text-sm hover:bg-bone text-red-600">Logout</button>
@@ -119,7 +122,7 @@
                         </template>
                     </div>
                     <div class="mt-4 text-center">
-                        <a :href="'{{ route('front.home') }}?search=' + query" class="text-xs text-primary hover:underline">View all results</a>
+                        <a :href="'{{ route('front.shop') }}?search=' + query" class="text-xs text-primary hover:underline">View all results</a>
                     </div>
                 </div>
                 
@@ -171,5 +174,59 @@
             &copy; {{ date('Y') }} Stylo. All rights reserved.
         </div>
     </footer>
+    <!-- Toast Notification -->
+    <div 
+        x-data="{ 
+            show: false, 
+            message: '', 
+            type: 'success',
+            timeout: null,
+            notify(message, type = 'success') {
+                this.show = true;
+                this.message = message;
+                this.type = type;
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => this.show = false, 3000);
+            }
+        }" 
+        @notify.window="notify($event.detail.message, $event.detail.type)"
+        x-show="show" 
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-2"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium flex items-center gap-3"
+        :class="{
+            'bg-black': type === 'success',
+            'bg-red-600': type === 'error',
+            'bg-yellow-500': type === 'warning',
+            'bg-blue-500': type === 'info'
+        }"
+        style="display: none;"
+    >
+        <span x-text="message"></span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                @if(session('success') || session('status'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('success') ?? session('status')), type: 'success' } }));
+                @endif
+                @if(session('error'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('error')), type: 'error' } }));
+                @endif
+                @if(session('warning'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('warning')), type: 'warning' } }));
+                @endif
+                @if(session('info'))
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { message: @json(session('info')), type: 'info' } }));
+                @endif
+            }, 500);
+        });
+    </script>
+
 </body>
 </html>

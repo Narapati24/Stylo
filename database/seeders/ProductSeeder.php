@@ -18,67 +18,112 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $products = [
-            [
-                'category' => 'Men\'s Collection',
-                'name' => 'Basic Men T-Shirt',
-                'price' => 150000,
-                'stock' => 50,
-                'thumbnail' => 'tshirt-men.jpg',
-            ],
-            [
-                'category' => 'Women\'s Collection',
-                'name' => 'Elegant Women Dress',
-                'price' => 250000,
-                'stock' => 30,
-                'thumbnail' => 'dress-women.jpg',
-            ],
-            [
-                'category' => 'Accessories',
-                'name' => 'Luxury Wrist Watch',
-                'price' => 500000,
-                'stock' => 20,
-                'thumbnail' => 'watch.jpg',
-            ],
-            [
-                'category' => 'Footwear',
-                'name' => 'Running Shoes',
-                'price' => 350000,
-                'stock' => 40,
-                'thumbnail' => 'shoes.jpg',
-            ],
-            [
-                'category' => 'New Arrivals',
-                'name' => 'Winter Jacket',
-                'price' => 450000,
-                'stock' => 15,
-                'thumbnail' => 'jacket.jpg',
-            ],
+        $faker = Faker::create();
+        $files = File::files(database_path('seeders/assets/products'));
 
-        ];
-        foreach ($products as $product) {
-            $category = Category::where('name', $product['category'])->first();
-
-            if (!$category) {
-                continue; 
-            }
+        $adjectives = ['Premium', 'Exclusive', 'Timeless', 'Modern', 'Elegant', 'Sophisticated', 'Minimalist', 'Urban', 'Classic', 'Heritage', 'Artisan', 'Refined', 'Signature', 'Essential', 'Luxe', 'Ethereal', 'Vintage', 'Contemporary'];
+        $materials = ['Cotton', 'Silk', 'Linen', 'Wool', 'Leather', 'Denim', 'Velvet', 'Cashmere', 'Satin', 'Canvas', 'Suede', 'Organic', 'Textured'];
+        
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            $nameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
             
-            $source = database_path('seeders/assets/products/' . $product['thumbnail']);
-            $target = 'products/' . $product['thumbnail'];
+            // Determine Category and Base Name based on filename
+            $categoryName = 'New Arrivals'; // Default
+            $baseName = 'Piece';
+            $price = 100000;
 
-            if (!Storage::disk('public')->exists($target)) {
-                Storage::disk('public')->put($target, File::get($source));
+            // Pick random adjective and material
+            $adj = $adjectives[array_rand($adjectives)];
+            $mat = $materials[array_rand($materials)];
+
+            if (str_contains($filename, 'kemeja') || $filename === 'shirts.jpg') {
+                $categoryName = 'Men\'s Collection';
+                $baseName = 'Oxford Shirt';
+                $price = 350000;
+            } elseif (str_contains($filename, 'baju')) {
+                $categoryName = 'Women\'s Collection';
+                $baseName = 'Blouse';
+                $price = 250000;
+            } elseif (str_contains($filename, 'hoodie')) {
+                $categoryName = 'Men\'s Collection';
+                $baseName = 'Pullover Hoodie';
+                $price = 450000;
+            } elseif (str_contains($filename, 'jaket') || str_contains($filename, 'jacket') || str_contains($filename, 'outerwear')) {
+                $categoryName = 'New Arrivals';
+                $baseName = 'Bomber Jacket';
+                if (str_contains($filename, 'outerwear')) $baseName = 'Trench Coat';
+                $price = 650000;
+            } elseif (str_contains($filename, 'dress')) {
+                $categoryName = 'Women\'s Collection';
+                $baseName = 'Evening Dress';
+                $price = 550000;
+            } elseif (str_contains($filename, 'shoes') || str_contains($filename, 'footwear')) {
+                $categoryName = 'Footwear';
+                $baseName = 'Sneakers';
+                $price = 800000;
+            } elseif (str_contains($filename, 'watch')) {
+                $categoryName = 'Accessories';
+                $baseName = 'Chronograph Watch';
+                $price = 2500000;
+            } elseif (str_contains($filename, 'neckles') || str_contains($filename, 'accessories')) {
+                $categoryName = 'Accessories';
+                $baseName = 'Pendant Necklace';
+                $price = 450000;
+            } elseif (str_contains($filename, 'tshirt') || str_contains($filename, 't-shirt')) {
+                $categoryName = 'Men\'s Collection';
+                $baseName = 'Tee';
+                $price = 180000;
+            } elseif (str_contains($filename, 'bottoms')) {
+                $categoryName = 'Men\'s Collection';
+                $baseName = 'Chino Pants';
+                $price = 300000;
             }
 
+            // Construct Luxury Name
+            $namingPattern = rand(1, 3);
+            if ($namingPattern == 1) {
+                $productName = "$adj $mat $baseName";
+            } elseif ($namingPattern == 2) {
+                $productName = "$adj $baseName";
+            } else {
+                $productName = "The $adj $baseName";
+            }
+
+            // Find Category
+            $category = Category::where('name', $categoryName)->first();
+            if (!$category) {
+                // Fallback if category not found (shouldn't happen if CategorySeeder ran)
+                continue;
+            }
+
+            // Copy image
+            $target = 'products/' . $filename;
+            if (!Storage::disk('public')->exists($target)) {
+                Storage::disk('public')->put($target, File::get($file->getPathname()));
+            }
+
+            // Generate Description
+            $descriptions = [
+                "Experience the $adj quality of our $productName. Made with the finest $mat, it defines luxury and comfort.",
+                "The $productName is a testament to $adj design. Featuring premium $mat, this $baseName is a must-have for your collection.",
+                "Discover the $adj charm of the $productName. Expertly crafted from $mat, it brings a touch of elegance to your wardrobe.",
+                "Elevate your look with the $productName. This $adj $baseName, woven from high-quality $mat, offers unmatched style and durability."
+            ];
+            $generatedDescription = $descriptions[array_rand($descriptions)];
+
+            // Create Product
             Products::updateOrCreate(
-                ['slug' => Str::slug($product['name'])],
+                ['slug' => Str::slug($productName . '-' . $filename)], // Unique slug using filename to avoid collisions
                 [
                     'category_id' => $category->id,
-                    'name' => $product['name'],
-                    'price' => $product['price'],
-                    'stock' => $product['stock'],
+                    'name' => $productName,
+                    'price' => $price + rand(0, 50000), // Add some variation
+                    'stock' => rand(10, 100),
                     'thumbnail' => $target,
-                    'description' => 'High quality ' . $product['name'],
+                    'description' => $generatedDescription,
+                    'created_at' => $faker->dateTimeBetween('-4 months', 'now'),
+                    'updated_at' => now(),
                 ]
             );
         }

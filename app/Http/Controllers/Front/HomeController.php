@@ -11,12 +11,12 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::where('is_active', true)->inRandomOrder()->get();
 
         $query = Products::query()
             ->search($request->search)
             ->filterCategory($request->category_id)
-            ->latest();
+            ->inRandomOrder();
 
         if ($request->ajax() || $request->wantsJson()) {
             if ($request->has('partial')) {
@@ -32,7 +32,7 @@ class HomeController extends Controller
                         'name' => $product->name,
                         'price' => number_format($product->price, 0, ',', '.'),
                         'image_url' => $product->image_url,
-                        'url' => route('front.product', $product->id)
+                        'url' => route('front.product', $product->slug)
                     ];
                 })
             ]);
@@ -43,9 +43,9 @@ class HomeController extends Controller
         return view('front.home', compact('products', 'categories'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $product = Products::findOrFail($id);
+        $product = Products::where('slug', $slug)->firstOrFail();
         return view('front.products.show', compact('product'));
     }
 }

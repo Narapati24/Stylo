@@ -179,6 +179,18 @@ php artisan config:cache
 php artisan route:cache
 ```
 
+### 7. Scheduler Setup (Cron Job)
+To enable automatic cancellation of pending transactions (older than 24 hours), add the following Cron entry to your server:
+
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+For local testing, you can run the command manually:
+```bash
+php artisan transactions:cancel-pending
+```
+
 ---
 
 ## 👥 Team Members

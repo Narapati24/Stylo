@@ -16,6 +16,7 @@ class Transaction extends Model
         'shipping_address',
         'status',
         'payment_proof',
+        'snap_token',
     ];
 
     public function user(): BelongsTo

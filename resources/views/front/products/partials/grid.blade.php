@@ -7,11 +7,12 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10" id="product-grid">
     @forelse($products as $product)
         @php
-            $productLink = Route::has('front.product') ? route('front.product', $product->id) : url('/product/'.$product->id);
+            $productLink = Route::has('front.product') ? route('front.product', $product->slug) : url('/product/'.$product->slug);
         @endphp
 
         @if($hasProductComponent)
             @include('components.product-card', [
+                'id' => $product->id,
                 'title' => $product->name,
                 'price' => 'Rp ' . number_format($product->price),
                 'image' => $product->thumbnail,
